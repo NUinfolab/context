@@ -1,0 +1,72 @@
+[classifier]
+linear_data_path=
+
+[context]
+twitter_consumer_key=
+twitter_consumer_secret=
+twitter_access_token=
+twitter_access_token_secret=
+
+[qwotd]
+twitter_consumer_key=
+twitter_consumer_secret=
+twitter_access_token=
+twitter_access_token_secret=
+
+[tweettalk]
+twitter_consumer_key=
+twitter_consumer_secret=
+twitter_access_token=
+twitter_access_token_secret=
+
+[stakeholder]
+twitter_consumer_key=
+twitter_consumer_secret=
+twitter_access_token=
+twitter_access_token_secret=
+
+[pundits]
+twitter_consumer_key=
+twitter_consumer_secret=
+twitter_access_token=
+twitter_access_token_secret=
+
+[stoplists]
+media = cnn, cnnbrk, tpm, ac360, joejohnscnn, newsweek, latimes,
+    washingtonpost, bybrianbennett, obamainaugural, houseonfox,
+    haileybranson, sam_schaefer, glennbeck, latvives, andrewsmith810,
+    joelrubin, larrygallup, reuters, bbcnewsus
+
+[punditpanels]
+politics = clairecmc, GovChristie, jahimes, GovGaryJohnson, SteveWorks4You, 
+    JerryBrownGov, jaketapper, thegarance, KateBolduan, ezraklein, ErinBurnett, 
+    chucktodd, cbellantoni, TheEconomist, WhiteHouse, BBCPolitics, thehill
+education = audreywatters, lisafleisher, alexanderrusso, MindShiftKQED, wpnick,
+    tamarnyt, wpjenna, valeriestrauss, mbmarklein, GoldieStandard, 
+    ShellTerrell, Larryferlazzo, web20classroom, NMHS_Principal, tomwhitby,
+    rmbyrne, WeAreTeachers
+arts = nytimesarts, yokoono, Guggenheim, whitneymuseum, MuseumModernArt, 
+    KnightLAT, popjustice, BFI, alaindebotton,  cmonstah, lindsaypollock,
+    artfagcity, TylerGreenDC, ARTnewsmag, escapeintolife, juliaxgulia,
+    jerrysaltz
+sports = nfl, nba, mlb, nhl, espn, sportscenter, sinow, yahoosports, 
+    bbcsport, cbssports, foxsports, nbcsports, deadspin, ap_sports,
+    huffpostsports, reuterssports
+entertainment = ew, eonline, peoplemag, tmz, cnnent, latimesent, thr,
+    apentertainment, variety, cbsshowbiz, todayent
+religion = huffpostrelig, rns, pewreligion, pontifex, dalailama, cbsreligion
+science-technology = nasa, sciam, neiltyson, science, sciencenews,
+    guardianscience, natgeo, cern, reutersscience, popsci, nsf, wired,
+    bbctech, verge, usatodaytech, nytimestech, cnet
+business = forbes, business, businessinsider, reutersbuz, bbcbusiness, inc,
+    fastcompany, wsjbusiness, wsj, foxbusiness, wbezbusiness, cnbc,
+    washpostbiz
+food = foodandwine, nytfood, latimesfood, jamieoliver, bourdain, huffpostfood,
+    rick_bayless, bonappetit, usdafoodsafety, yahoofood, gdelaurentiis,
+    telegraphfood, bflay, mariobatali, epicurious, timesfood, huffposttaste,
+    todayfood
+healthy-living = womenshealthmag, menshealthmag, nprhealth, nytimeshealth, 
+    nbsnewshealth, publichealth, nimhgov, cnnhealth, latimeshealth, 
+    usatodayhealth, cbshealth, wsjhealth, reuters_health, webmd, yahoohealth,
+    womenshealth, nih, mayoclinic, cdcgov, foxnewshealth, abcnewshealth,
+    fitnessmagazine
