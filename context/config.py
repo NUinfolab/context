@@ -67,3 +67,4 @@ def get_stoplist_names():
     config = configuration()
     return [name for name, value in config.items('stoplists')]
 
+

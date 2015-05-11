@@ -7,6 +7,7 @@ import requests
 import string
 from collections import defaultdict, OrderedDict
 import birdy.twitter
+from birdy.twitter import TwitterAuthError
 from ..config import get_twitter_keys, get_named_stoplist
 from ..content import all_page_text
 from ..nlp.keywords import check_keywords
@@ -176,7 +177,6 @@ def lookup_users(client, handles):
 def get_timeline(users, keywords, section='context', credentials=None, limit=None):
     tk = get_twitter_keys(section)._replace(**credentials or {})        
     client = UserClient(*tk)
-
     tweets = []
     closed = []
     for i, user in enumerate(users):
@@ -224,3 +224,19 @@ def screen_name_filter(tweet_list, stoplist):
         except AttributeError:
             tweets.append(tweet)
     return tweets
+
+
+def discover_users(entity, section, credentials):
+    tk = get_twitter_keys(section)._replace(**credentials or {})
+    client = UserClient(*tk)
+    user_query = urllib.quote_plus(
+        '"%s"' % entity['name'].encode('ascii', 'xmlcharrefreplace'))
+    results = client.api.users.search.get(q=user_query).data
+    if len(results) == 0:
+        user_query = urllib.quote_plus(entity['name'].encode('ascii',
+            'xmlcharrefreplace'))
+        results = client.api.users.search.get(
+            q=user_query).data
+    for r in results:
+        r.update({'discovered_via':'twitter'})
+    return results

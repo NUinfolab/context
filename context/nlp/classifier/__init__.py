@@ -10,7 +10,7 @@ import liblinearutil
 import math
 from models import NormalizedBinaryTextInstance
 from utils import clean_text, clean_tweet_text
-from ..config import get_section_data
+from ...config import get_section_data
 
 #
 # map indicies to category names

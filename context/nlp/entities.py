@@ -5,8 +5,10 @@ from __future__ import division
 from collections import defaultdict, namedtuple
 import codecs
 import nltk
+import re
 from .util import get_sentences, pos_tag, tokenize, NLTK_VERSION
 
+ALNUM_PAT = re.compile(r'[A-Za-z0-9]+')
 
 EntityKey = namedtuple('EntityKey', ('tokenized_name', 'normalized_name'))
 
@@ -272,3 +274,23 @@ def collapse_entities(entity_list):
         name_list.extend([s for s in name_forms if s not in name_list])
        
     return name_list
+
+
+def name_tokens(entity):
+    entity_names = set([entity['name']] + entity['name_forms'])
+    entity_name_tokens = []
+    for name in entity_names:
+        tokens = ALNUM_PAT.findall(name)
+        for token in tokens:
+            if token not in entity_name_tokens:
+                entity_name_tokens.append(token)
+    return entity_name_tokens
+
+
+def best_matches(entity_names, objs, name_key='name'):
+    obj_name_parts = name_parts([obj[name_key] for obj in objs])
+    entity_name_parts = name_parts(entity_names, flat=True)
+    matches = map(lambda x: compare_names(entity_name_parts, x),
+        obj_name_parts)
+    return sorted(zip(matches, objs), reverse=True)
+

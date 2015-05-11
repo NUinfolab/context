@@ -1,0 +1,12 @@
+{% extends "base.jinja2" %}
+
+{% block content %}
+    {% for text, tweets_ in tweets %}
+        <h3>{{ text }}</h3>
+        <ul>
+        {% for tweet in tweets_ %}
+            <li>@{{ tweet.user.screen_name }}</li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock content %}
