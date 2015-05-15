@@ -1,0 +1,17 @@
+{% extends "base.jinja2" %}
+
+{% block content %}
+    {% for s in stakeholders %}
+      <div>
+        <h3>{{ s.name }}</h3>
+        <h4>{{ s.name_forms | join(' | ') }}</h4>
+        <p><strong>Score:</strong> {{ s.score }}</p>
+        <h5>Twitter users:</h5>
+        <ul>
+        {% for user in s.twitter_users %}
+            <li>{{ user.name }} (@{{ user.screen_name }})</li>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+{% endblock content %}

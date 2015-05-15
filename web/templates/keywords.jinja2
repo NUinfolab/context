@@ -1,0 +1,10 @@
+{% extends "base.jinja2" %}
+
+{% block content %}
+  {% for keyword in keywords %}
+    <div>
+    <h3>{{ keyword.keyword }}</h3>
+    <p><strong>count:</strong> {{ keyword.count }} &nbsp; <strong>locations:</strong> {{ keyword.locations|join(' | ') }}</p>
+    </div>
+  {% endfor %}
+{% endblock content %}
