@@ -6,7 +6,8 @@ from collections import defaultdict, namedtuple
 import codecs
 import nltk
 import re
-from .util import get_sentences, pos_tag, tokenize, NLTK_VERSION
+from .util import get_sentences, pos_tag, tokenize, NLTK_VERSION, \
+    name_parts, compare_names
 
 ALNUM_PAT = re.compile(r'[A-Za-z0-9]+')
 
