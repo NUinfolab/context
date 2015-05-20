@@ -1,0 +1,22 @@
+{
+    "content_scripts": [], 
+    "description": "Infolab Context", 
+    "creator": "Northwestern University InfoLab", 
+    "background_scripts": [
+        "js/main.js"
+    ], 
+    "homepage_url": "http://infolabprojects.com/", 
+    "version": "0.1.0", 
+    "browser_button": {
+        "caption": "Context -dev-", 
+        "icon": "icons/button.png", 
+        "tooltipText": "Context -dev-",
+        "popup": {
+            "url": "popup.html",
+            "width": 300
+        }
+    }, 
+    "options_page": "options.html",
+    "name": "InfoLab Context -dev-",
+    "base_url": "http://127.0.0.1:5000/" 
+}

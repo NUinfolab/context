@@ -1,0 +1,1 @@
+kango.addEventListener(kango.event.READY,function(){var b=new kango.UserscriptEngineClient;kango.browser.addEventListener("DocumentLoaded",function(a){a=a.window;b.run(a,"document-end",a==a.top)});kango.browser.addEventListener("DocumentInserted",function(a){a=a.window;b.run(a,"document-start",a==a.top)})});

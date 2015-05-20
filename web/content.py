@@ -2,6 +2,7 @@ import bson
 from functools import wraps
 from flask import request, redirect, url_for
 from connection import _content
+from context.content import get_article
 from context.nlp.classifier import classify_text
 from context.nlp.entities import get_entities
 from context.nlp.keywords import get_keywords

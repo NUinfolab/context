@@ -1,0 +1,1 @@
+kango.registerModule(function(a){var b=kango.getExtensionInfo();"undefined"!=typeof b.browser_button&&(a.ui.browserButton=new kango.ui.BrowserButton(b.browser_button),this.dispose=function(){"undefined"!=typeof a.ui.browserButton.dispose&&a.ui.browserButton.dispose();a.ui.browserButton=null})});

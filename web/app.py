@@ -1,5 +1,5 @@
 import traceback
-from birdy.twitter import UserClient, TwitterAuthError
+from birdy.twitter import UserClient, TwitterAuthError, TwitterClientError
 from context.config import get_twitter_keys, get_section_data
 from context.query import twitter_query
 from context.services.twitter import \
@@ -12,7 +12,7 @@ import flask
 from flask import Flask, render_template, request, jsonify, url_for, redirect
 from auth import get_twitter_credentials
 from content import content_identifier_required, content_keywords, \
-    content_entities, content_stakeholders, cached_content
+    content_entities, content_stakeholders, cached_content, content_categories
 from session import session_get, session_set, \
     remove_session_credentials, session_pop, session_pop_list
 from stakeholders import stakeholder_tweets
@@ -244,7 +244,8 @@ def url_(app='qwotd'):
             # User not authenticated. Re-initiating Twitter auth.
             if 'html' in request.headers['Accept'] and \
                     request.args.get('_format') != 'json':
-                return redirect(url_for('auth_check', app=app)) 
+                return redirect(url_for('auth_check', app=app) + \
+                    '?redirect=%s' % request.url)
             session_pop(app, 'access_token')
             session_pop(app, 'access_token_secret')
             return url_(app)
@@ -339,10 +340,14 @@ def stakeholders(app='stakeholder', content_id=None):
     except TwitterAuthError:
         # This redirect is for the HTML UI. JSON clients should execute the
         # auth-check / auth-verify cycle before making API calls
-        return redirect(url_for('auth_check', app=app))
+        return redirect(url_for('auth_check', app=app) + \
+            '?redirect=%s' % request.url)
+    except TwitterClientError:
+        return render({'url':request.url},
+            template='twitter_client_error.jinja2')    
     except Exception, e:
         traceback.print_exc()
-        return jsonify({'error': str(e)})    
+        return jsonify({'error': str(e), 'url':request.url})
 
 
 @app.route('/stakeholdertweets')
@@ -368,7 +373,11 @@ def stakeholdertweets(app='stakeholder', content_id=None):
     except TwitterAuthError:
         # This redirect is for the HTML UI. JSON clients should execute the
         # auth-check / auth-verify cycle before making API calls
-        return redirect(url_for('auth_check', app=app))
+        return redirect(url_for('auth_check', app=app) + \
+            '?redirect=%s' % request.url)
+    except TwitterClientError:
+        return render({'url':request.url},
+            template='twitter_client_error.jinja2')    
     except Exception, e:
         traceback.print_exc()
         return jsonify({'error': str(e)})
@@ -399,7 +408,11 @@ def pundittweets(app='pundits', content_id=None):
     except TwitterAuthError:
         # This redirect is for the HTML UI. JSON clients should execute the
         # auth-check / auth-verify cycle before making API calls
-        return redirect(url_for('auth_check', app=app))
+        return redirect(url_for('auth_check', app=app) + \
+            '?redirect=%s' % request.url)
+    except TwitterClientError:
+        return render({'url':request.url},
+            template='twitter_client_error.jinja2')    
     except Exception, e:
         traceback.print_exc()
         return jsonify({'error': str(e)})
@@ -423,7 +436,11 @@ def topic(app='tweettalk', content_id=None):
     except TwitterAuthError:
         # This redirect is for the HTML UI. JSON clients should execute the
         # auth-check / auth-verify cycle before making API calls
-        return redirect(url_for('auth_check', app=app))
+        return redirect(url_for('auth_check', app=app) + \
+            '?redirect=%s' % request.url)
+    except TwitterClientError:
+        return render({'url':request.url},
+            template='twitter_client_error.jinja2')    
     except Exception, e:
         traceback.print_exc()
         return jsonify({'error': str(e)})

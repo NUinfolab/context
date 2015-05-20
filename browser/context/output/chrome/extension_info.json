@@ -1,0 +1,25 @@
+{
+    "kango_version": "1.3.9 5f7ad87d19fe", 
+    "content_scripts": [], 
+    "description": "Infolab Context", 
+    "creator": "Northwestern University InfoLab", 
+    "kango_package_id": "dev", 
+    "base_url": "http://127.0.0.1:5000/", 
+    "background_scripts": [
+        "js/main.js"
+    ], 
+    "homepage_url": "http://infolabprojects.com/", 
+    "version": "0.1.0", 
+    "options_page": "options.html", 
+    "browser_button": {
+        "caption": "Context -dev-", 
+        "tooltipText": "Context -dev-", 
+        "popup": {
+            "url": "popup.html", 
+            "width": 300
+        }, 
+        "icon": "icons/button.png"
+    }, 
+    "id": "boakbefpcaplhkiflamiejifcdnhabme", 
+    "name": "InfoLab Context -dev-"
+}

@@ -1,0 +1,1 @@
+window.addEventListener("DOMContentLoaded",function(){KangoAPI.getBackgroundPage=function(){return chrome.extension.getBackgroundPage()};KangoAPI.closeWindow=function(){window.close()};KangoAPI.fireReady()},!1);

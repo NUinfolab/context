@@ -1,0 +1,1 @@
+kango.registerModule(function(a){var b=kango.getExtensionInfo();"undefined"!=typeof b.context_menu_item&&(a.ui.contextMenuItem=new kango.ui.ContextMenuItem(b.context_menu_item),this.dispose=function(){"undefined"!=typeof a.ui.contextMenuItem.dispose&&a.ui.contextMenuItem.dispose();a.ui.contextMenuItem=null})});
