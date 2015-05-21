@@ -8,16 +8,11 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'Click',
         'newspaper',
         'numpy',
         'birdy',
     ],
     dependency_links = [
     ],
-    entry_points="""
-        [console_scripts]
-        context=context.cli:cli
-    """,
     test_suite='tests',
 )
