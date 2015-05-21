@@ -9,7 +9,7 @@
     "version": "0.1.0", 
     "browser_button": {
         "caption": "Context", 
-        "icon": "icons/button.png", 
+        "icon": "icons/information.png", 
         "tooltipText": "Context",
         "popup": {
             "url": "popup.html",

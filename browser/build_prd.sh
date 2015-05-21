@@ -1,12 +1,12 @@
 # Define list of extensions, pass script argument to build just one
-ext_list=('context',)
+ext_list=('infolabcontext')
 
 if [ $1 ]; then
     ext_list=($1)
 fi
 
 # Where built extensions get copied to
-deployment_dir="../web/flaskapp/static/browser-extensions/"
+deployment_dir="../web/static/browser-extensions/"
 
 # Doit
 for name in "${ext_list[@]}"
@@ -22,7 +22,7 @@ do
     for d in *.safariextension
     do
         zip -r $d.zip $d > /dev/null
-        mv $d.zip ../web/static/browser-extensions/
+        mv $d.zip ../../../../web/static/browser-extensions/
         echo "* $name/output/safari/$d.zip"
     done
     popd > /dev/null

@@ -161,34 +161,13 @@ def auth_verify(app):
 # api
 #
 
-BROWSER_EXTENSIONS = (
-    {   'name': 'Qwotd',
-        'basename': 'qwotd',
-        'chrome': '0.1.0',
-        'firefox': '0.1.0',
-        'safari': '0.1.0' },
-    {   'name': "Stakeholders' Tweetback",
-        'basename': 'stakeholder',
-        'chrome': '0.1.0',
-        'firefox': '0.1.0',
-        'safari': '0.1.0' },
-    {   'name': 'TweetTalk',
-        'basename': 'tweettalk',
-        'chrome': '0.1.0',
-        'firefox': '0.1.0',
-        'safari': '0.1.0' },
-    {   'name': 'Readdit',
-        'basename': 'readdit',
-        'chrome': '0.1.0',
-        'firefox': '0.1.0',
-        'safari': '0.1.0' },
-    {   'name': 'Pundits',
-        'basename': 'pundits',
+BROWSER_EXTENSIONS = [
+    {   'name': 'Infolab Context Browser Extension',
+        'basename': 'infolabcontext',
         'chrome': '0.1.0',
         'firefox': '0.1.0',
         'safari': '0.1.0' }
-
-)
+]
 
 def browser_extensions():
     ext_url = \

@@ -5,7 +5,7 @@
     "developer_id": "YOUR_SAFARI_DEVELOPER_ID", 
     "creator": "Northwestern University InfoLab", 
     "kango_package_id": "dev", 
-    "base_url": "http://127.0.0.1:5000/", 
+    "base_url": "http://context.infolabprojects.com/", 
     "background_scripts": [
         "js/main.js"
     ], 
@@ -13,8 +13,8 @@
     "version": "0.1.0", 
     "options_page": "options.html", 
     "browser_button": {
-        "caption": "Context -dev-", 
-        "tooltipText": "Context -dev-", 
+        "caption": "Context", 
+        "tooltipText": "Context", 
         "popup": {
             "url": "popup.html", 
             "width": 300
@@ -22,5 +22,5 @@
         "icon": "icons/information.png"
     }, 
     "id": "com.kangoextensions.tweettalk", 
-    "name": "InfoLab Context -dev-"
+    "name": "Infolab Context"
 }

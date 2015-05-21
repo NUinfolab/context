@@ -8,15 +8,15 @@
     "homepage_url": "http://infolabprojects.com/", 
     "version": "0.1.0", 
     "browser_button": {
-        "caption": "Context -dev-", 
+        "caption": "Context", 
         "icon": "icons/information.png", 
-        "tooltipText": "Context -dev-",
+        "tooltipText": "Context",
         "popup": {
             "url": "popup.html",
             "width": 300
         }
     }, 
     "options_page": "options.html",
-    "name": "InfoLab Context -dev-",
-    "base_url": "http://127.0.0.1:5000/" 
+    "name": "Infolab Context",
+    "base_url": "http://context.infolabprojects.com/" 
 }
