@@ -186,9 +186,9 @@ def home():
     data = {
         'context': 'OK',
         'notes': [
-            'While Firefox extensions appear to be installable via direct link, they should be installed by downloading first. We are seeing different behaviors for these modes of installation, likely due to security policies in Firefox.',
-            'Chrome extensions should be downloaded and copied locally into the Extensions window (Window > Extensions).',
-            'Safari exensions should be downloaded, unzipped, and installed via the Extension Builder (Develop > Show Extension Builder)',
+            'While the Firefox extension appears to be installable via direct link, it should be installed by downloading first. We are seeing different behaviors for these modes of installation, likely due to security policies in Firefox.',
+            'The Chrome extension should be downloaded and copied locally into the Extensions window (Window > Extensions).',
+            'The Safari exension should be downloaded, unzipped, and installed via the Extension Builder (Develop > Show Extension Builder)',
         ],
         'resources': {
             'browser_extensions': browser_extensions()
