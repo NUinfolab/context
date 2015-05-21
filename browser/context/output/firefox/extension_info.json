@@ -19,7 +19,7 @@
             "url": "popup.html", 
             "width": 300
         }, 
-        "icon": "icons/button.png"
+        "icon": "icons/information.png"
     }, 
     "id": "{79E95064-92E1-48D9-92EF-47031041EDC6}", 
     "name": "InfoLab Context -dev-"

@@ -19,7 +19,7 @@
             "url": "popup.html", 
             "width": 300
         }, 
-        "icon": "icons/button.png"
+        "icon": "icons/information.png"
     }, 
     "id": "com.kangoextensions.tweettalk", 
     "name": "InfoLab Context -dev-"

@@ -37,7 +37,7 @@
 				<key>Identifier</key>
 				<string>kango-ui-button</string>
 				<key>Image</key>
-				<string>icons/button.png</string>
+				<string>icons/information.png</string>
 				<key>Include By Default</key>
 				<true/>
 				<key>Label</key>
