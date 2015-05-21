@@ -4,7 +4,7 @@
     "description": "Infolab Context", 
     "creator": "Northwestern University InfoLab", 
     "kango_package_id": "dev", 
-    "base_url": "http://context.infolabprojects.com/", 
+    "base_url": "http://23.236.61.92/context/", 
     "background_scripts": [
         "js/main.js"
     ], 
