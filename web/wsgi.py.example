@@ -1,0 +1,21 @@
+"""
+WSGI config for context project.
+"""
+import os
+import sys
+import site
+
+VIRTUALENV_PATH = '... /path/to/virtualenv'
+REPO_PATH = '... /path/to/context/repo'
+CONFIG_FILE = '... /path/to/context.cfg'
+MONGO_HOST = 'mongo.host'
+
+site.addsitedir(os.path.join(VIRTUALENV_PATH, 'lib/python2.7/site-packages'))
+sys.path.append(REPO_PATH)
+sys.path.append(os.path.join(REPO_PATH, 'web'))
+sys.stdout = sys.stderr
+
+os.environ.setdefault('CONTEXT_CONFIG', CONFIG_FILE)
+os.environ.setdefault('CONTEXT_MONGO_HOST', MONGO_HOST)
+
+from app import application
