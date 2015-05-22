@@ -6,8 +6,8 @@
         <em:targetApplication>
             <Description>
                 <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-                <em:minVersion>8.0</em:minVersion>
-                <em:maxVersion>29.*</em:maxVersion>
+                <em:minVersion>17.0</em:minVersion>
+                <em:maxVersion>36.*</em:maxVersion>
             </Description>
         </em:targetApplication>
         <em:bootstrap>true</em:bootstrap>
@@ -18,5 +18,6 @@
         <em:optionsURL>chrome://kango-79e95064-92e1-48d9-92ef-47031041edc6/content/options.html</em:optionsURL>
         <em:optionsType>3</em:optionsType>
         
+        <em:type>2</em:type>
     </Description>
 </RDF>

@@ -1,3 +1,12 @@
-kango.ui.OptionsPage=function(){var a=kango.getExtensionInfo();if("undefined"!=typeof a.options_page){var b=this._optionsUrl=kango.io.getExtensionFileUrl(a.options_page).toLowerCase();kango.browser.addEventListener("DocumentLoaded",function(a){0==a.url.toLowerCase().indexOf(b)&&(a.window.kango=kango,a.window.__optionsPageMode=!0)})}};
-kango.ui.OptionsPage.prototype=kango.oop.extend(kango.ui.IOptionsPage,{_optionsUrl:"",dispose:function(){},open:function(a){if(""!=this._optionsUrl){var b=this._optionsUrl;"undefined"!=typeof a&&(b+="#"+a);kango.browser.tabs.create({url:b,focused:!0,reuse:!0});return!0}return!1},close:function(){var a=this._optionsUrl;""!=a&&kango.browser.tabs.getAll(function(b){kango.array.forEach(b,function(b){0==b.getUrl().indexOf(a)&&b.close()})})}});
-kango.registerModule(kango.getDefaultModuleRegistrar("ui.optionsPage",kango.ui.OptionsPage));
+﻿var utils=require("kango/utils"),NotImplementedException=utils.NotImplementedException;function IOptionsPage(){}IOptionsPage.prototype={open:function(){throw new NotImplementedException;}};function getPublicApi(){return utils.createApiWrapper(module.exports,IOptionsPage.prototype)};
+
+
+
+
+
+
+
+
+var extensionInfo=require("kango/extension_info"),utils=require("kango/utils"),browser=require("kango/browser"),io=require("kango/io"),chromeWindows=require("kango/chrome_windows"),array=utils.array;function OptionsPage(){var b=this._optionsUrl=io.getExtensionFileUrl(extensionInfo.options_page).toLowerCase();browser.addEventListener("DocumentLoaded",function(a){0==a.url.toLowerCase().indexOf(b)&&(a.window.__kango_require=require,a.window.__kango_optionsPageMode=!0)})}
+OptionsPage.prototype={dispose:function(){this.close()},open:function(b){if(""!=this._optionsUrl){var a=this._optionsUrl;"undefined"!=typeof b&&(a+="#"+b);browser.tabs.create({url:a,focused:!0,reuse:!0});return!0}return!1},close:function(){var b=this._optionsUrl;if(""!=b)for(var a=chromeWindows.getMostRecentChromeWindow().gBrowser,c=0;c<a.browsers.length;c++)if(0==a.getBrowserAtIndex(c).currentURI.spec.indexOf(b)){a.removeTab(a.tabContainer.childNodes[c]);break}}};
+extensionInfo.options_page&&(module.exports=new OptionsPage,module.exports.getPublicApi=getPublicApi);

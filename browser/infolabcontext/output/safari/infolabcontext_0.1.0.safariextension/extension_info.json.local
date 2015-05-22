@@ -13,7 +13,8 @@
         "tooltipText": "Context -dev-",
         "popup": {
             "url": "popup.html",
-            "width": 300
+            "width": 300,
+            "height": 400
         }
     }, 
     "options_page": "options.html",

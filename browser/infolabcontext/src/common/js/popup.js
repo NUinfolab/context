@@ -86,7 +86,7 @@ KangoAPI.onReady(function(event) {
       kango.browser.tabs.getCurrent(function(tab) {
         var url = info.base_url + href + '?url=' + tab.getUrl();
         kango.browser.windows.create({
-          url: url, width: 400, modal: true, chrome: true
+          url: url, width: 400
         });
       });
       return false;

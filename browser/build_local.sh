@@ -1,5 +1,5 @@
 # Define list of extensions, pass script argument to build just one
-ext_list=('context')
+ext_list=('infolabcontext')
 
 if [ $1 ]; then
     ext_list=($1)

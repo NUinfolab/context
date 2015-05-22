@@ -1,1 +1,1 @@
-window.addEventListener("load",function(){kango.init(function(){var a=new XMLHttpRequest;a.open("GET",safari.extension.baseURI+kango.CONFIG_FILE_NAME,!1);a.overrideMimeType("text/plain");a.send(null);return JSON.parse(a.responseText)}())},!1);
+window.addEventListener("load",function(){var c=_kangoLoader,a=_kangoLoader.require("kango/extension_info"),b=["kango/userscript_engine","kango/backgroundscript_engine","kango/api"];a.modules&&(b=b.concat(a.modules));for(a=0;a<b.length;a++)c.require(b[a]);_kangoLoader.require("kango/core").init()},!1);

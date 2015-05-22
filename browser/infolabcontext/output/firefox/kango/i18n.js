@@ -1,7 +1,7 @@
-﻿kango.Internationalization=function(){this._loadLocales(this.getApplicationLocale())};
-kango.Internationalization.prototype={_messages:null,_currentLocale:"en",_defaultLocale:"en",_loadLocales:function(a){var b=kango.getExtensionInfo();this._locales=b.locales||null;null!=this._locales&&(this._defaultLocale=b.default_locale||"en",this._currentLocale=null!=a&&""!=a?a.slice(0,2).toLowerCase():this._defaultLocale,this._messages={},a=this._getLocaleMessages(this._currentLocale),null!=a&&(this._messages[this._currentLocale]=a),this._currentLocale!=this._defaultLocale&&(this._messages[this._defaultLocale]=
-this._getLocaleMessages(this._defaultLocale)))},_getLocaleMessages:function(a){a=kango.io.getExtensionFileContents("locales/"+a+".json");return null!=a&&""!=a?JSON.parse(a):null},getApplicationLocale:function(){return this._defaultLocale},getCurrentLocale:function(){return this._currentLocale},getMessages:function(){return null!=this._messages?"undefined"!=typeof this._messages[this._currentLocale]?this._messages[this._currentLocale]:this._messages[this._defaultLocale]:null},getMessage:function(a){var b=
-this.getMessages(),b=null!=b&&"undefined"!=typeof b[a]?b[a]:a;return 1<arguments.length?kango.string.format.apply(kango.string,[b].concat(Array.prototype.slice.call(arguments,1))):b}};kango.registerModule(kango.getDefaultModuleRegistrar("i18n",kango.Internationalization));
+﻿var extensionInfo=require("kango/extension_info"),utils=require("kango/utils"),io=require("kango/io"),string=utils.string;function InternationalizationBase(){this._messages={};this._currentLocale=this._defaultLocale="en";this._loadLocales(this.getApplicationLocale())}
+InternationalizationBase.prototype={_loadLocales:function(a){extensionInfo.locales&&(this._defaultLocale=extensionInfo.default_locale||"en",this._currentLocale=a?a.slice(0,2).toLowerCase():this._defaultLocale,this._messages[this._currentLocale]=this._getLocaleMessages(this._currentLocale),this._currentLocale!=this._defaultLocale&&(this._messages[this._defaultLocale]=this._getLocaleMessages(this._defaultLocale)))},_getLocaleMessages:function(a){return(a=io.getExtensionFileContents("locales/"+a+".json"))?
+JSON.parse(a):null},getApplicationLocale:function(){return this._defaultLocale},getCurrentLocale:function(){return this._currentLocale},getMessages:function(){return(this._messages[this._currentLocale]?this._messages[this._currentLocale]:this._messages[this._defaultLocale])||{}},getMessage:function(a){var b=this.getMessages(),b=b[a]?b[a]:a;return 1<arguments.length?string.format.apply(string,[b].concat(Array.prototype.slice.call(arguments,1))):b}};
+function getPublicApi(){return utils.createApiWrapper(module.exports,InternationalizationBase.prototype)};
 
 
 
@@ -10,4 +10,5 @@ this.getMessages(),b=null!=b&&"undefined"!=typeof b[a]?b[a]:a;return 1<arguments
 
 
 
-kango.Internationalization.prototype.getApplicationLocale=function(){return Services.locale.getApplicationLocale().getCategory("NSILOCALE_MESSAGES")};
+var utils=require("kango/utils"),object=utils.object,console=require("kango/console");function Internationalization(){InternationalizationBase.call(this)}Internationalization.prototype=object.extend(InternationalizationBase,{getApplicationLocale:function(){try{return Cc["@mozilla.org/chrome/chrome-registry;1"].getService(Ci.nsIXULChromeRegistry).getSelectedLocale("global")}catch(a){return console.warn("Unable to detect current locale"),console.reportError(a),null}}});module.exports=new Internationalization;
+module.exports.getPublicApi=getPublicApi;

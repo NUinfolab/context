@@ -1,2 +1,0 @@
-kango.MessageRouter=function(){this.superclass.apply(this,arguments);chrome.runtime.onMessage.addListener(kango.func.bind(this._onMessage,this))};
-kango.MessageRouter.prototype=kango.oop.extend(kango.MessageRouterBase,{_onMessage:function(a,d){var b={name:a.name,data:a.data,origin:a.origin,target:null,source:null};if("tab"==a.origin){var c=d.tab;"undefined"==typeof c&&(c={id:-1,url:"",title:"Hidden Tab"});b.source=new kango.BrowserTab(c);b.target=b.source}this.fireMessageEvent(kango.event.MESSAGE,b)}});

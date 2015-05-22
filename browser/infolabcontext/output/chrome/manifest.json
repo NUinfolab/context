@@ -7,7 +7,8 @@
     }, 
     "web_accessible_resources": [
         "res/*", 
-        "assets/*"
+        "assets/*", 
+        "icons/*"
     ], 
     "description": "Infolab Context", 
     "background": {
