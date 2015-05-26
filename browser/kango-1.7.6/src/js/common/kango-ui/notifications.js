@@ -1,0 +1,1 @@
+var utils=require("kango/utils"),object=utils.object,EventTarget=utils.EventTarget,NotImplementedException=utils.NotImplementedException;function INotifications(){}INotifications.prototype={show:function(a,b,c,d){throw new NotImplementedException;}};function getPublicApi(){return utils.createApiWrapper(module.exports,INotifications.prototype)};

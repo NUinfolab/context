@@ -1,0 +1,1 @@
+var getExtensionInfo=function(){var a=new XMLHttpRequest;a.open("GET",chrome.extension.getURL("extension_info.json"),!1);a.overrideMimeType("text/plain");a.send(null);return JSON.parse(a.responseText)};module.exports=new ExtensionInfo(getExtensionInfo());

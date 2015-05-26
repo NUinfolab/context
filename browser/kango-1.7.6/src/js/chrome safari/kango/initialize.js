@@ -1,0 +1,1 @@
+window.addEventListener("load",function(){var c=_kangoLoader,a=_kangoLoader.require("kango/extension_info"),b=["kango/userscript_engine","kango/backgroundscript_engine","kango/api"];a.modules&&(b=b.concat(a.modules));for(a=0;a<b.length;a++)c.require(b[a]);_kangoLoader.require("kango/core").init()},!1);

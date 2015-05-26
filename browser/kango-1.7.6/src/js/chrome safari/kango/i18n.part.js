@@ -1,0 +1,1 @@
+var utils=require("kango/utils"),object=utils.object;function Internationalization(){InternationalizationBase.call(this)}Internationalization.prototype=object.extend(InternationalizationBase,{getApplicationLocale:function(){return window.navigator.language||null}});module.exports=new Internationalization;module.exports.getPublicApi=getPublicApi;

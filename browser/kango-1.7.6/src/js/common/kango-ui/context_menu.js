@@ -1,0 +1,1 @@
+var utils=require("kango/utils"),object=utils.object,EventTarget=utils.EventTarget,IEventTarget=utils.IEventTarget;function ContextMenuItemBase(){EventTarget.call(this)}ContextMenuItemBase.prototype=object.extend(EventTarget,{event:{CLICK:"click"}});function getPublicApi(){return utils.createApiWrapper(module.exports,ContextMenuItemBase.prototype,IEventTarget.prototype)};

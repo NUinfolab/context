@@ -1,0 +1,2 @@
+var utils=require("kango/utils"),object=utils.object,console=require("kango/console");function Internationalization(){InternationalizationBase.call(this)}Internationalization.prototype=object.extend(InternationalizationBase,{getApplicationLocale:function(){try{return Cc["@mozilla.org/chrome/chrome-registry;1"].getService(Ci.nsIXULChromeRegistry).getSelectedLocale("global")}catch(a){return console.warn("Unable to detect current locale"),console.reportError(a),null}}});module.exports=new Internationalization;
+module.exports.getPublicApi=getPublicApi;

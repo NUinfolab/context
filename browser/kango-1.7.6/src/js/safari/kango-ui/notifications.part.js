@@ -1,0 +1,1 @@
+function Notifications(){}Notifications.prototype={show:function(a,b,c,d){window.Notification&&(a=new Notification(a,{body:b,icon:c}),a.onclick=d,a.show())}};module.exports=new Notifications;module.exports.getPublicApi=getPublicApi;

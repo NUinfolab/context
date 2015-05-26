@@ -1,0 +1,2 @@
+window.addEventListener("DOMContentLoaded",function(){var a=window.__kango_require;delete window.__kango_require;var c=window.__kango_optionsPageMode;delete window.__kango_optionsPageMode;KangoAPI.getBackgroundPage=function(){return a("kango/backgroundscript_engine").getDOMWindow()};KangoAPI._require=function(b){return a(b)};KangoAPI.closeWindow=function(){c?a("kango-ui/options").close():a("kango-ui/browser_button").closePopup()};KangoAPI.resizeWindow=function(b,d){c||a("kango-ui/browser_button").resizePopup(b,
+d)};KangoAPI._fireReady()},!1);

@@ -1,0 +1,2 @@
+window.addEventListener("DOMContentLoaded",function(){if("undefined"!=typeof safari.extension.globalPage){var a=safari.extension.globalPage.contentWindow._kangoLoader.require;KangoAPI.getBackgroundPage=function(){return safari.extension.globalPage.contentWindow};KangoAPI.closeWindow=function(){a("kango-ui/browser_button").closePopup()};KangoAPI.resizeWindow=function(b,a){safari.self.width=b;safari.self.height=a};KangoAPI._require=function(b){return a(b)}}else initApi(),KangoAPI.closeWindow=function(){window.close()};
+KangoAPI._fireReady()},!1);

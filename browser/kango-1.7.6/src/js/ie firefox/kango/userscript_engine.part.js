@@ -1,0 +1,2 @@
+var core=require("kango/core"),utils=require("kango/utils"),browser=require("kango/browser"),lang=require("kango/lang"),object=utils.object;
+core.addEventListener("ready",function(){var d=module.exports,b=function(a,c,b){c=d.getScripts(a.document.URL,c,b);object.forEach(c,function(b,c){lang.evalScriptsInSandbox(a,b,c)})};browser.addEventListener("DocumentLoaded",function(a){a=a.window;b(a,"document-end",a==a.top)});browser.addEventListener("DocumentInserted",function(a){a=a.window;b(a,"document-start",a==a.top)})});

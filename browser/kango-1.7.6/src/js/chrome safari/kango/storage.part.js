@@ -1,0 +1,2 @@
+function LocalStorage(){}LocalStorage.prototype={getItem:function(a){return localStorage.getItem(a)},setItem:function(a,b){return localStorage.setItem(a,b)},removeItem:function(a){return localStorage.removeItem(a)},clear:function(){return localStorage.clear()},getKeys:function(){for(var a=localStorage.length,b=Array(a),c=0;c<a;c++)b[c]=localStorage.key(c);return b}};module.exports.storage=new JSONStorage(new UserStorage(new LocalStorage));module.exports.systemStorage=new JSONStorage(new SystemStorage(new LocalStorage));
+module.exports.getPublicApi=getPublicApi;
