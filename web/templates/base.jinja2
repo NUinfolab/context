@@ -45,24 +45,26 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li{% if request.endpoint == 'url_' %} class="active"{% endif %}><a href="{{ url_for('url_') }}">URL Search</a></li>
-            <li{% if request.endpoint == 'content' %} class="active"{% endif %}><a href="{{ url_for('content') }}">Content</a></li>
-            <li{% if request.endpoint == 'keywords' %} class="active"{% endif %}><a href="{{ url_for('keywords') }}">Keywords</a></li>
-            <li{% if request.endpoint == 'entities' %} class="active"{% endif %}><a href="{{ url_for('entities') }}">Entities</a></li>
-            <li{% if request.endpoint == 'topic' %} class="active"{% endif %}><a href="{{ url_for('topic') }}">Topic</a></li>
-            <li{% if request.endpoint == 'stakeholders' %} class="active"{% endif %}><a href="{{ url_for('stakeholders') }}">Stakeholders</a></li>
-            <li{% if request.endpoint == 'stakeholdertweets' %} class="active"{% endif %}><a href="{{ url_for('stakeholdertweets') }}">Stakeholder Tweets</a></li>
-            <li{% if request.endpoint == 'reddits' %} class="active"{% endif %}><a href="{{ url_for('reddits') }}">Reddits</a></li>
-            <li{% if request.endpoint == 'categories' %} class="active"{% endif %}><a href="{{ url_for('categories') }}">Categories</a></li>
-            <li{% if request.endpoint == 'pundittweets' %} class="active"{% endif %}><a href="{{ url_for('pundittweets') }}">Pundit Tweets</a></li>
+            <li{% if request.endpoint == 'url_' %} class="active"{% endif %}><a href="{{ url_for('url_') }}?url={{ request.content.url }}">URL Search</a></li>
+            <li{% if request.endpoint == 'content' %} class="active"{% endif %}><a href="{{ url_for('content') }}?url={{ request.content.url }}">Content</a></li>
+            <li{% if request.endpoint == 'keywords' %} class="active"{% endif %}><a href="{{ url_for('keywords') }}?url={{ request.content.url }}">Keywords</a></li>
+            <li{% if request.endpoint == 'entities' %} class="active"{% endif %}><a href="{{ url_for('entities') }}?url={{ request.content.url }}">Entities</a></li>
+            <li{% if request.endpoint == 'topic' %} class="active"{% endif %}><a href="{{ url_for('topic') }}?url={{ request.content.url }}">Topic</a></li>
+            <li{% if request.endpoint == 'stakeholders' %} class="active"{% endif %}><a href="{{ url_for('stakeholders') }}?url={{ request.content.url }}">Stakeholders</a></li>
+            <li{% if request.endpoint == 'stakeholdertweets' %} class="active"{% endif %}><a href="{{ url_for('stakeholdertweets') }}?url={{ request.content.url }}">Stakeholder Tweets</a></li>
+            <li{% if request.endpoint == 'reddits' %} class="active"{% endif %}><a href="{{ url_for('reddits') }}?url={{ request.content.url }}">Reddits</a></li>
+            <li{% if request.endpoint == 'categories' %} class="active"{% endif %}><a href="{{ url_for('categories') }}?url={{ request.content.url }}">Categories</a></li>
+            <li{% if request.endpoint == 'pundittweets' %} class="active"{% endif %}><a href="{{ url_for('pundittweets') }}?url={{ request.content.url }}">Pundit Tweets</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
+        <p>
       {% block content %}
       {% endblock content %}
+        </p>
     </div> <!-- /container -->
 
     <!-- Le javascript
