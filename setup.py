@@ -11,6 +11,8 @@ setup(
         'newspaper',
         'numpy',
         'birdy',
+        'flask',
+        'pymongo'
     ],
     dependency_links = [
     ],
