@@ -36,12 +36,11 @@ def content_categories(content):
     return content['categories']
 
 
-def content_stakeholders(content, app='stakeholder'):
+def content_stakeholders(content):
     if not 'stakeholders' in content:
         entities = content_entities(content)
         kwargs = {
-            'section': app,
-            'credentials': get_twitter_credentials(app)
+            'credentials': get_twitter_credentials()
         }
         stakeholder_list = find_stakeholder_twitter_users(
             content['text'], entities, **kwargs)

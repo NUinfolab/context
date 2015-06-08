@@ -10,30 +10,6 @@ bing_account=
 bing_search_account_key=
 flaskapp_secret_key=
 
-[qwotd]
-twitter_consumer_key=
-twitter_consumer_secret=
-twitter_access_token=
-twitter_access_token_secret=
-
-[tweettalk]
-twitter_consumer_key=
-twitter_consumer_secret=
-twitter_access_token=
-twitter_access_token_secret=
-
-[stakeholder]
-twitter_consumer_key=
-twitter_consumer_secret=
-twitter_access_token=
-twitter_access_token_secret=
-
-[pundits]
-twitter_consumer_key=
-twitter_consumer_secret=
-twitter_access_token=
-twitter_access_token_secret=
-
 [stoplists]
 media = cnn, cnnbrk, tpm, ac360, joejohnscnn, newsweek, latimes,
     washingtonpost, bybrianbennett, obamainaugural, houseonfox,

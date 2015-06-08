@@ -52,9 +52,9 @@ def url_required():
     return render_template('url_required.jinja2', next=request.args.get('next'))
 
 
-@app.route('/auth/clear/<app>')
-def auth_clear(app):
-    remove_session_credentials(app)
+@app.route('/auth/clear')
+def auth_clear():
+    remove_session_credentials()
     return jsonify({ 'status': 'OK' })
 
 
@@ -63,20 +63,19 @@ def session_show():
     return jsonify({ k:v for k,v in flask.session.iteritems() })
 
 
-@app.route('/auth/check/<app>/')
-def auth_check(app):
+@app.route('/auth/check')
+def auth_check():
     """
     Check authorization.  Get signin token and auth_url, if needed.
-    <app> = application identifier
     
     @redirect = redirect to this url post-authorization verification
     """
     try:
-        access_token = session_get(app, 'access_token')
-        access_token_secret = session_get(app, 'access_token_secret')
+        access_token = session_get('access_token')
+        access_token_secret = session_get('access_token_secret')
 
-        if access_token and access_token_secret:        
-            tk = get_twitter_keys(app)
+        if access_token and access_token_secret:                    
+            tk = get_twitter_keys()
             client = UserClient(
                 tk.consumer_key,
                 tk.consumer_secret,
@@ -98,15 +97,15 @@ def auth_check(app):
             else:
                 # possibly revoked access, although this will probably
                 # get handled by the TwitterAuthError catch
-                remove_session_credentials('stakeholder')
+                remove_session_credentials()
                 return jsonify({'is_auth': 0})
-        tk = get_twitter_keys(app)
+        tk = get_twitter_keys()
         client = UserClient(tk.consumer_key, tk.consumer_secret)
-        callback = 'http://'+request.host+url_for('auth_verify', app=app)
+        callback = 'http://'+request.host+url_for('auth_verify')
         token = client.get_authorize_token(callback)
-        session_set(app, 'auth_token', token.oauth_token)
-        session_set(app, 'auth_token_secret', token.oauth_token_secret)
-        session_set(app, 'auth_redirect',
+        session_set('auth_token', token.oauth_token)
+        session_set('auth_token_secret', token.oauth_token_secret)
+        session_set('auth_redirect',
             request.args.get('redirect') or '')
         if (
                 'html' in request.headers['Accept']
@@ -116,18 +115,17 @@ def auth_check(app):
             data = {'is_auth': 0, 'auth_url': token.auth_url}
             return jsonify(data)
     except TwitterAuthError:
-        remove_session_credentials(app)
+        remove_session_credentials()
         return jsonify({'is_auth': 0})
     except Exception, e:
         traceback.print_exc()
         return jsonify({'error': str(e)})
              
 
-@app.route('/auth/verify/<app>/')
-def auth_verify(app):
+@app.route('/auth/verify')
+def auth_verify():
     """
     Get final access token and secret, redirect   
-    <app> = application identifier
     
     @oauth_verifier = parameter from auth_url callback (see above)  
     """
@@ -135,19 +133,18 @@ def auth_verify(app):
         oauth_verifier = request.args.get('oauth_verifier')
         if not oauth_verifier:
             raise Exception('expected oauth_verifier parameter')
-        auth_token = session_get(app, 'auth_token')
-        auth_token_secret = session_get(app, 'auth_token_secret')    
-        auth_redirect = session_get(app, 'auth_redirect')
+        auth_token = session_get('auth_token')
+        auth_token_secret = session_get('auth_token_secret')    
+        auth_redirect = session_get('auth_redirect')
         if not (auth_token and auth_token_secret):
             raise Exception('Authorization credentials not found in session')
         tk = get_twitter_keys()
         client = UserClient(tk.consumer_key, tk.consumer_secret,
                     auth_token, auth_token_secret)                    
         token = client.get_access_token(oauth_verifier)
-        session_set(app, 'access_token', token.oauth_token)
-        session_set(app, 'access_token_secret', token.oauth_token_secret)    
-        session_pop_list(app,
-            ['auth_token', 'auth_token_secret', 'auth_redirect'])
+        session_set('access_token', token.oauth_token)
+        session_set('access_token_secret', token.oauth_token_secret)    
+        session_pop_list(['auth_token', 'auth_token_secret', 'auth_redirect'])
         if auth_redirect:
             return redirect(auth_redirect)
         else:
@@ -201,12 +198,11 @@ def home():
 
   
 @app.route('/url')
-@app.route('/url/<app>/')
+@app.route('/url')
 @content_identifier_required
-def url_(app='qwotd'):
+def url_():
     """
     Search for tweets by url
-    <app> = application identifier
 
     @url = url to search for
     """    
@@ -216,18 +212,18 @@ def url_(app='qwotd'):
             raise Exception('Expected url parameter')
           
         try:
-            credentials = get_twitter_credentials(app)
+            credentials = get_twitter_credentials()
             params = {'q': url, 'count': 200}       
-            tweets = search_recent(params, section=app, credentials=credentials)
+            tweets = search_recent(params, credentials=credentials)
         except TwitterAuthError:
             # User not authenticated. Re-initiating Twitter auth.
             if 'html' in request.headers['Accept'] and \
                     request.args.get('_format') != 'json':
-                return redirect(url_for('auth_check', app=app) + \
+                return redirect(url_for('auth_check') + \
                     '?redirect=%s' % request.url)
-            session_pop(app, 'access_token')
-            session_pop(app, 'access_token_secret')
-            return url_(app)
+            session_pop('access_token')
+            session_pop('access_token_secret')
+            return url_()
         tweets = dedupe_tweets(tweets)
         grouped = group_tweets_by_text(tweets)
         for k, tweet_list in grouped.iteritems():
@@ -241,7 +237,7 @@ def url_(app='qwotd'):
         return jsonify({'error': str(e)})        
 
 
-@app.route('/content/')
+@app.route('/content')
 @content_identifier_required
 def content():
     """
@@ -258,7 +254,7 @@ def content():
 
     
 @app.route('/keywords')
-@app.route('/keywords/<content_id>/')
+@app.route('/keywords/<content_id>')
 @content_identifier_required
 def keywords(content_id=None):
     """
@@ -274,7 +270,7 @@ def keywords(content_id=None):
             
 
 @app.route('/entities')
-@app.route('/entities/<content_id>/')
+@app.route('/entities/<content_id>')
 @content_identifier_required
 def entities(content_id=None):
     """
@@ -290,7 +286,7 @@ def entities(content_id=None):
 
 
 @app.route('/categories')
-@app.route('/categories/<content_id>/')
+@app.route('/categories/<content_id>')
 @content_identifier_required
 def categories(content_id=None):
     """
@@ -306,20 +302,20 @@ def categories(content_id=None):
         
 
 @app.route('/stakeholders')
-@app.route('/stakeholders/<app>/<content_id>/')
+@app.route('/stakeholders/<content_id>')
 @content_identifier_required
-def stakeholders(app='stakeholder', content_id=None):
+def stakeholders(content_id=None):
     """Retrieve and cache stakeholders for article with <id>
     """
     try:
         content = request.content
-        data = content_stakeholders(content, app=app)
+        data = content_stakeholders(content)
         return render({ 'stakeholders': data },
             template='stakeholders.jinja2')
     except TwitterAuthError:
         # This redirect is for the HTML UI. JSON clients should execute the
         # auth-check / auth-verify cycle before making API calls
-        return redirect(url_for('auth_check', app=app) + \
+        return redirect(url_for('auth_check') + \
             '?redirect=%s' % request.url)
     except TwitterClientError:
         return render({'url':request.url},
@@ -330,29 +326,28 @@ def stakeholders(app='stakeholder', content_id=None):
 
 
 @app.route('/stakeholdertweets')
-@app.route('/stakeholdertweets/<app>/<content_id>/')
+@app.route('/stakeholdertweets/<content_id>')
 @content_identifier_required
-def stakeholdertweets(app='stakeholder', content_id=None):
+def stakeholdertweets(content_id=None):
     """
     Retrieve stakeholder tweets for article with <id>
     """
     try:
         content = request.content
         keywords = content_keywords(content)
-        stakeholders = content_stakeholders(content, app=app)
+        stakeholders = content_stakeholders(content)
         stakeholders = stakeholders[:request.args.get('limit', 10)]
-        credentials = get_twitter_credentials(app)
+        credentials = get_twitter_credentials()
         result = stakeholder_tweets(
             stakeholders,
             keywords,
-            section=app,
             credentials=credentials)
         d = group_tweets_by_screen_name([d['tweet'] for d in result])
         return render({'tweets': d.items()}, template='stakeholdertweets.jinja2')     
     except TwitterAuthError:
         # This redirect is for the HTML UI. JSON clients should execute the
         # auth-check / auth-verify cycle before making API calls
-        return redirect(url_for('auth_check', app=app) + \
+        return redirect(url_for('auth_check') + \
             '?redirect=%s' % request.url)
     except TwitterClientError:
         return render({'url':request.url},
@@ -363,9 +358,9 @@ def stakeholdertweets(app='stakeholder', content_id=None):
         
 
 @app.route('/pundittweets')
-@app.route('/pundittweets/<app>/<content_id>/')
+@app.route('/pundittweets/<content_id>/')
 @content_identifier_required
-def pundittweets(app='pundits', content_id=None):
+def pundittweets(content_id=None):
     """
     Retrieve pundit tweets for article with <id>
     """
@@ -376,18 +371,17 @@ def pundittweets(app='pundits', content_id=None):
         if not categories:
             raise Exception('No categories found for article')    
         category = categories[0][0]
-        credentials = get_twitter_credentials(app)
+        credentials = get_twitter_credentials()
         tweets = pundit_tweets(
             category,
             keywords,
-            section=app,
             credentials=credentials)
         tweets = dedupe_tweets(tweets)
         return render({'tweets': tweets}, template='pundittweets.jinja2')
     except TwitterAuthError:
         # This redirect is for the HTML UI. JSON clients should execute the
         # auth-check / auth-verify cycle before making API calls
-        return redirect(url_for('auth_check', app=app) + \
+        return redirect(url_for('auth_check') + \
             '?redirect=%s' % request.url)
     except TwitterClientError:
         return render({'url':request.url},
@@ -398,24 +392,24 @@ def pundittweets(app='pundits', content_id=None):
 
     
 @app.route('/topic')
-@app.route('/topic/<app>/<content_id>/')
+@app.route('/topic/<content_id>')
 @content_identifier_required
-def topic(app='tweettalk', content_id=None):
+def topic(content_id=None):
     """
     Search for tweets related to the topic of article with <id>
     """
     try:
         q = twitter_query(content_keywords(request.content),
             content_entities(request.content))        
-        credentials = get_twitter_credentials(app)
+        credentials = get_twitter_credentials()
         params = {'q': q, 'count': 100, 'result_type': 'mixed'}
-        result = twitter_search(params, section=app, credentials=credentials)  
+        result = twitter_search(params, credentials=credentials)  
         tweets = screen_name_filter(result.statuses, 'media')
         return render( {'tweets': tweets }, template='topic.jinja2')
     except TwitterAuthError:
         # This redirect is for the HTML UI. JSON clients should execute the
         # auth-check / auth-verify cycle before making API calls
-        return redirect(url_for('auth_check', app=app) + \
+        return redirect(url_for('auth_check') + \
             '?redirect=%s' % request.url)
     except TwitterClientError:
         return render({'url':request.url},
@@ -426,9 +420,9 @@ def topic(app='tweettalk', content_id=None):
 
 
 @app.route('/reddits')
-@app.route('/reddits/<app>/<content_id>/')
+@app.route('/reddits/<content_id>')
 @content_identifier_required
-def reddits(app='readdit', content_id=None):
+def reddits(content_id=None):
     """
     Search for reddits related to the topic of article with <id>
     https://www.reddit.com/dev/api#GET_search

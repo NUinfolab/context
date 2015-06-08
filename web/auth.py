@@ -14,9 +14,9 @@ def twitter_auth_required(f):
     return wrapper
 
 
-def get_twitter_credentials(app):
-    access_token = session_get(app, 'access_token')
-    access_token_secret = session_get(app, 'access_token_secret')
+def get_twitter_credentials():
+    access_token = session_get('access_token')
+    access_token_secret = session_get('access_token_secret')
     if not (access_token and access_token_secret):     
         raise TwitterAuthError('User is not authorized')
     return {
