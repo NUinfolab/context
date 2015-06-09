@@ -16,7 +16,44 @@
       }
     </style>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet">
-
+<!-- bootstrap override: expand navbar at 1200 instead of 768 -->
+    <style>
+@media (min-width: 768px) {
+    .navbar-header {
+        float: none; 
+    }
+    .navbar-toggle {
+        display: block; 
+    }
+    .navbar-fixed-top .navbar-collapse, 
+    .navbar-static-top .navbar-collapse, 
+    .navbar-fixed-bottom .navbar-collapse {
+        padding-right: 15px;
+        padding-left: 15px; 
+    }
+    .navbar-collapse.collapse {
+        display: none !important; 
+    }
+    .navbar-collapse.collapse.in { 
+        display: block!important; 
+        margin-top: 0px; 
+    }
+}
+@media (min-width: 1200px) {
+    .navbar-header {
+        float: left; 
+    }
+    .navbar-toggle {
+        display: none; 
+    }
+    .navbar-fixed-top .navbar-collapse, 
+    .navbar-static-top .navbar-collapse, 
+    .navbar-fixed-bottom .navbar-collapse {
+        display: block !important; 
+    }
+}
+    </style>
+    
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://getbootstrap.com/2.3.2/assets/js/html5shiv.js"></script>
