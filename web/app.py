@@ -234,7 +234,8 @@ def url_():
         return render(data, template='url.jinja2')
     except Exception, e:
         traceback.print_exc()
-        return jsonify({'error': str(e)})        
+        return render({'url': request.url, 'error': str(e)},
+            template='error.jinja2')    
 
 
 @app.route('/content')
@@ -250,7 +251,8 @@ def content():
         return render(cached_content(url=url), template='content.jinja2')
     except Exception, e:
         traceback.print_exc()
-        return jsonify({'error': str(e)})        
+        return render({'url': request.url, 'error': str(e)},
+            template='error.jinja2')    
 
     
 @app.route('/keywords')
@@ -266,7 +268,8 @@ def keywords(content_id=None):
         return render({ 'keywords': data }, template='keywords.jinja2')
     except Exception, e:
         traceback.print_exc()
-        return jsonify({'error': str(e)})
+        return render({'url': request.url, 'error': str(e)},
+            template='error.jinja2')    
             
 
 @app.route('/entities')
@@ -282,7 +285,8 @@ def entities(content_id=None):
         return render(data, template='entities.jinja2')
     except Exception, e:
         traceback.print_exc()
-        return jsonify({'error': str(e)})
+        return render({'url': request.url, 'error': str(e)},
+            template='error.jinja2')    
 
 
 @app.route('/categories')
@@ -298,7 +302,8 @@ def categories(content_id=None):
         return render(data, template='categories.jinja2')    
     except Exception, e:
         traceback.print_exc()
-        return jsonify({'error': str(e)})
+        return render({'url': request.url, 'error': str(e)},
+            template='error.jinja2')    
         
 
 @app.route('/stakeholders')
@@ -322,7 +327,8 @@ def stakeholders(content_id=None):
             template='twitter_client_error.jinja2')    
     except Exception, e:
         traceback.print_exc()
-        return jsonify({'error': str(e), 'url':request.url})
+        return render({'url': request.url, 'error': str(e)},
+            template='error.jinja2')    
 
 
 @app.route('/stakeholdertweets')
@@ -354,7 +360,8 @@ def stakeholdertweets(content_id=None):
             template='twitter_client_error.jinja2')    
     except Exception, e:
         traceback.print_exc()
-        return jsonify({'error': str(e)})
+        return render({'url': request.url, 'error': str(e)},
+            template='error.jinja2')    
         
 
 @app.route('/pundittweets')
@@ -388,7 +395,8 @@ def pundittweets(content_id=None):
             template='twitter_client_error.jinja2')    
     except Exception, e:
         traceback.print_exc()
-        return jsonify({'error': str(e)})
+        return render({'url': request.url, 'error': str(e)},
+            template='error.jinja2')    
 
     
 @app.route('/topic')
@@ -416,7 +424,8 @@ def topic(content_id=None):
             template='twitter_client_error.jinja2')    
     except Exception, e:
         traceback.print_exc()
-        return jsonify({'error': str(e)})
+        return render({'url': request.url, 'error': str(e)},
+            template='error.jinja2')    
 
 
 @app.route('/reddits')
@@ -447,8 +456,9 @@ def reddits(content_id=None):
         return render({'reddits': reddits}, template='reddits.jinja2')    
     except Exception, e:
         traceback.print_exc()
-        return jsonify({'error': str(e)})
-                        
+        return render({'url': request.url, 'error': str(e)},
+            template='error.jinja2')    
+                         
 
 if __name__ == "__main__":
     app.run(debug=True)
