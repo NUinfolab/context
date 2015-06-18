@@ -85,9 +85,19 @@ KangoAPI.onReady(function(event) {
       var info = kango.getExtensionInfo();
       kango.browser.tabs.getCurrent(function(tab) {
         var url = info.base_url + href + '?url=' + tab.getUrl();
-        kango.browser.windows.create({
-          url: url, width: 400
-        });
+        
+        switch(kango.browser.getName()) {
+            case 'firefox':
+            case 'safari':
+                window.open(url, '_blank', 'width=400, scrollbars=yes,resizable,status=1');
+                break;
+            
+            default:
+                kango.browser.windows.create({
+                  url: url, width: 400
+                });
+                break;
+        }
       });
       return false;
     });
