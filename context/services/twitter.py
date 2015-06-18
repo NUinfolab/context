@@ -227,6 +227,7 @@ def screen_name_filter(tweet_list, stoplist):
 
 
 def discover_users(entity, section, credentials):
+    """Search for Twitter users by entity name"""
     tk = get_twitter_keys(section)._replace(**credentials or {})
     client = UserClient(*tk)
     user_query = urllib.quote_plus(
