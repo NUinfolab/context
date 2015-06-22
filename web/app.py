@@ -265,7 +265,7 @@ def keywords(content_id=None):
     """
     try:
         data = content_keywords(request.content)
-        return render({ 'keywords': data }, template='keywords.jinja2')
+        return render({'keywords': data}, template='keywords.jinja2')
     except Exception, e:
         traceback.print_exc()
         return render({'url': request.url, 'error': str(e)},

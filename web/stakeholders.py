@@ -89,11 +89,9 @@ def is_media(user):
     return False
 
 
-def find_stakeholder_twitter_users(content, entities, section='context',
-        credentials=None):
+def find_stakeholder_twitter_users(content, entities, credentials=None):
     """
     @entities = list of entities
-    @section = config section
     @credentials = dictionary containing token/secret overrides
     """
     users = []
@@ -116,7 +114,7 @@ def find_stakeholder_twitter_users(content, entities, section='context',
                     twitter_name_passes(r['name'], entity_name_tokens)]
                 results = cached_results
         if not found_cached:
-            full_results = discover_users(entity, section, credentials)
+            full_results = discover_users(entity, credentials)
             results = [r for r in full_results if r['verified']]
             results = [r for r in results if not is_media(r)]
             results = [r for r in results if
@@ -148,12 +146,11 @@ def find_stakeholder_twitter_users(content, entities, section='context',
     return users
 
 
-def stakeholder_tweets(users, keywords, section='context', credentials=None,
-        limit=None):
+def stakeholder_tweets(users, keywords, credentials=None, limit=None):
     # Throw out users that are too ambiguous
     # TODO: ideally we would try to disambiguate and use the best option
     users = [user for user in users if len(user['twitter_users']) <= 3]
-    tweets = get_timeline(users, keywords, section=section, 
+    tweets = get_timeline(users, keywords, 
         credentials=credentials, limit=limit)
     return tweets
     

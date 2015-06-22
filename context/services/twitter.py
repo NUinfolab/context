@@ -29,13 +29,10 @@ class UserClient(birdy.twitter.UserClient):
         return dict(self).__repr__
 
 
-_client = None
-def client():
-    """Get Twitter UserClient"""
-    global _client
-    if _client is None:
-        _client = UserClient(*get_twitter_keys())
-    return _client
+def get_client(credentials=None):
+    """Get credentialed Twitter UserClient"""
+    tk = get_twitter_keys()._replace(**credentials or {})
+    return UserClient(*tk)
 
 
 def best_users(entity_names, twitter_objs):
@@ -120,30 +117,26 @@ def group_tweets_by_text(tweet_list):
     return results
 
 
-def search(params, section='context', credentials=None):
+def search(params, credentials=None):
     """
     Execute twitter search
     
     @params = dictionary of search parameters
-    @section = config section
     @credentials = dictionary containing token/secret overrides
     """
-    tk = get_twitter_keys(section)._replace(**credentials or {})        
-    client = UserClient(*tk)
+    client = get_client(credentials)
     return client.api.search.tweets.get(**params).data
 
 
-def search_recent(params, section='context', credentials=None):
+def search_recent(params, credentials=None):
     """
     Execute twitter search for most_recent tweets (allows pagination)
     @return list of tweets in reverse chronological order
    
     @params = dictionary of search parameters
-    @section = config section
     @credentials = dictionary containing token/secret overrides
     """
-    tk = get_twitter_keys(section)._replace(**credentials or {})        
-    client = UserClient(*tk)
+    client = get_client(credentials)
     tweets = []
     params['result_type'] = 'recent'
     n_tweets = 0
@@ -174,9 +167,8 @@ def lookup_users(client, handles):
             raise e
 
 
-def get_timeline(users, keywords, section='context', credentials=None, limit=None):
-    tk = get_twitter_keys(section)._replace(**credentials or {})        
-    client = UserClient(*tk)
+def get_timeline(users, keywords, credentials=None, limit=None):
+    client = get_client(credentials)
     tweets = []
     closed = []
     for i, user in enumerate(users):
@@ -226,10 +218,9 @@ def screen_name_filter(tweet_list, stoplist):
     return tweets
 
 
-def discover_users(entity, section, credentials):
+def discover_users(entity, credentials=None):
     """Search for Twitter users by entity name"""
-    tk = get_twitter_keys(section)._replace(**credentials or {})
-    client = UserClient(*tk)
+    client = get_client(credentials)
     user_query = urllib.quote_plus(
         '"%s"' % entity['name'].encode('ascii', 'xmlcharrefreplace'))
     results = client.api.users.search.get(q=user_query).data

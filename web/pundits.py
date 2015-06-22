@@ -3,7 +3,7 @@ from context.config import configuration
 from context.query import twitter_query
 from context.config import get_twitter_keys
 from context.services.twitter import search as twitter_search
-from birdy.twitter import UserClient
+
 
 CONFIG_LIST_REGEX = re.compile(r'[, \s]+')
 
@@ -29,8 +29,7 @@ def chunk_iter(seq, n):
     return (seq[pos:pos + n] for pos in xrange(0, len(seq), n))
 
 
-def pundit_tweets(category, keywords, section='context', credentials=None, 
-    limit=None):
+def pundit_tweets(category, keywords, credentials=None, limit=None):
     """
     Do keyword search of tweets from pundits in category
     Twitter says to keep keywords and operators < 10
@@ -49,15 +48,13 @@ def pundit_tweets(category, keywords, section='context', credentials=None,
         if n_from > 0:
             break
         n_keywords -= 1
-    tk = get_twitter_keys(section)._replace(**credentials or {})        
-    client = UserClient(*tk)
+
     tweets = []    
     for group in chunk_iter(pundits, n_from):    
         q_from = ' OR '.join(['from:%s' % x for x in group])
-        q = '(%s) AND (%s)' % (q_from, q_keywords)
+        q = '%s AND %s' % (q_from, q_keywords)
         params = {'q': q, 'count': 20, 'result_type': 'mixed'}
-        result = twitter_search(
-            params, section=section, credentials=credentials)
+        result = twitter_search(params, credentials=credentials)
         if len(result.statuses) != 0:
             tweets.extend(result.statuses)
     return tweets
