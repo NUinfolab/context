@@ -277,8 +277,8 @@ def keywords(content_id=None):
 @content_identifier_required
 def entities(content_id=None):
     """
-    Retrieve and cache entities for article with <content_id>. Alternatively
-    accepts url or id in query params.
+    Retrieve and cache entities for article with <content_id>.
+    Alternatively accepts url or id in query params.
     """
     try:
         data = {'entities': content_entities(request.content)}
@@ -294,8 +294,8 @@ def entities(content_id=None):
 @content_identifier_required
 def categories(content_id=None):
     """
-    Retrieve and cache categories for article with <content_id>/  Alternatively
-    accepts or url or id in query params.
+    Retrieve and cache categories for article with <content_id>.
+    Alternatively accepts or url or id in query params.
     """
     try:
         data = {'categories': content_categories(request.content)}
@@ -310,16 +310,18 @@ def categories(content_id=None):
 @app.route('/stakeholders/<content_id>')
 @content_identifier_required
 def stakeholders(content_id=None):
-    """Retrieve and cache stakeholders for article with <id>
+    """
+    Retrieve and cache stakeholders for article with <content_id>
+    Alternatively accepts url or id in query params.
     """
     try:
         content = request.content
         data = content_stakeholders(content)
-        return render({ 'stakeholders': data },
+        return render({'stakeholders': data},
             template='stakeholders.jinja2')
     except TwitterAuthError:
-        # This redirect is for the HTML UI. JSON clients should execute the
-        # auth-check / auth-verify cycle before making API calls
+        # This redirect is for the HTML UI. JSON clients should execute
+        # the auth-check / auth-verify cycle before making API calls
         return redirect(url_for('auth_check') + \
             '?redirect=%s' % request.url)
     except TwitterClientError:
@@ -336,7 +338,8 @@ def stakeholders(content_id=None):
 @content_identifier_required
 def stakeholdertweets(content_id=None):
     """
-    Retrieve stakeholder tweets for article with <id>
+    Retrieve stakeholder tweets for article with <content_id>
+    Alternatively accepts url or id in query params.
     """
     try:
         content = request.content
@@ -349,10 +352,11 @@ def stakeholdertweets(content_id=None):
             keywords,
             credentials=credentials)
         d = group_tweets_by_screen_name([d['tweet'] for d in result])
-        return render({'tweets': d.items()}, template='stakeholdertweets.jinja2')     
+        return render({'tweets': d.items()},
+            template='stakeholdertweets.jinja2')     
     except TwitterAuthError:
-        # This redirect is for the HTML UI. JSON clients should execute the
-        # auth-check / auth-verify cycle before making API calls
+        # This redirect is for the HTML UI. JSON clients should execute
+        # the auth-check / auth-verify cycle before making API calls
         return redirect(url_for('auth_check') + \
             '?redirect=%s' % request.url)
     except TwitterClientError:
@@ -369,7 +373,8 @@ def stakeholdertweets(content_id=None):
 @content_identifier_required
 def pundittweets(content_id=None):
     """
-    Retrieve pundit tweets for article with <id>
+    Retrieve pundit tweets for article with <content_id>
+    Alternatively accepts url or id in query params.
     """
     try:
         content = request.content
@@ -386,8 +391,8 @@ def pundittweets(content_id=None):
         tweets = dedupe_tweets(tweets)
         return render({'tweets': tweets}, template='pundittweets.jinja2')
     except TwitterAuthError:
-        # This redirect is for the HTML UI. JSON clients should execute the
-        # auth-check / auth-verify cycle before making API calls
+        # This redirect is for the HTML UI. JSON clients should execute
+        # the auth-check / auth-verify cycle before making API calls
         return redirect(url_for('auth_check') + \
             '?redirect=%s' % request.url)
     except TwitterClientError:
@@ -404,7 +409,8 @@ def pundittweets(content_id=None):
 @content_identifier_required
 def topic(content_id=None):
     """
-    Search for tweets related to the topic of article with <id>
+    Search for tweets related to topic of article with <content_id>
+    Alternatively accepts url or id in query params.
     """
     try:
         q = twitter_query(content_keywords(request.content),
@@ -415,8 +421,8 @@ def topic(content_id=None):
         tweets = screen_name_filter(result.statuses, 'media')
         return render( {'tweets': tweets }, template='topic.jinja2')
     except TwitterAuthError:
-        # This redirect is for the HTML UI. JSON clients should execute the
-        # auth-check / auth-verify cycle before making API calls
+        # This redirect is for the HTML UI. JSON clients should execute
+        # the auth-check / auth-verify cycle before making API calls
         return redirect(url_for('auth_check') + \
             '?redirect=%s' % request.url)
     except TwitterClientError:
@@ -433,7 +439,7 @@ def topic(content_id=None):
 @content_identifier_required
 def reddits(content_id=None):
     """
-    Search for reddits related to the topic of article with <id>
+    Search for reddits related to topic of article with <content_id>
     https://www.reddit.com/dev/api#GET_search
     
     The extension performs these functions on the client side due to 
