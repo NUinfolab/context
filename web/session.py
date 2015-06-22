@@ -1,7 +1,6 @@
-#
-# per-app session management
-#
-
+"""
+Flask session utilities
+"""
 import flask
 
 
