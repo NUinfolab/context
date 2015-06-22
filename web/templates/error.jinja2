@@ -3,4 +3,12 @@
 {% block content %}
   <p>There was a problem processing your request.</p>
   <p>Click <a href="{{ url }}">here</a> to try your request again.</p>
+  
+  <p>
+  <a href="#error_details" data-toggle="collapse">Error Details</a>
+  
+  <div class="collapse" id="error_details">
+      <pre>{{ error }}</pre>
+  </div>
+  </p>
 {% endblock content %}
