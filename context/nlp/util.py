@@ -9,7 +9,8 @@ def nltk_major_version():
     
 NLTK_VERSION = nltk_major_version()
 ALNUM_PAT = re.compile(r'[A-Za-z0-9]+')
-    
+MULTIWORD_PAT = re.compile(r'(.*) +(.*)')
+   
 
 def get_sentences(text):
     """Return sentence list"""
@@ -85,6 +86,7 @@ def compare_names(namepartsA, namepartsB):
 
 
 def name_parts(names, flat=False):
+    """Return list of words within a name"""
     parts = []
     for name in names:
         n = ALNUM_PAT.findall(name)
@@ -97,10 +99,4 @@ def name_parts(names, flat=False):
 
 def quoted_terms(term_list):
     """Return list of terms with multi-word terms quoted"""
-    _quoted_terms = []
-    for term in term_list:
-        if term.find(' ') < 0:
-            _quoted_terms.append(term)
-        else:
-            _quoted_terms.append('"%s"' % term)
-    return _quoted_terms
+    return [MULTIWORD_PAT.sub(r'"\1 \2"', t) for t in term_list]
