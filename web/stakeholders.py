@@ -61,7 +61,11 @@ SKIP_TOKENS = \
     'sir', 'sr', 'jr', 'mayor', 'president', 'chief', 'gov',
     'governor', 'sen', 'senator', 'sgt', 'sargeant']
 
+
 def twitter_name_passes(name, entity_name_tokens):
+    """
+    Does every name token appear in entity_name_tokens
+    """
     entity_tokens = [t.lower() for t in entity_name_tokens]
     name_tokens = [n.lower() for n in ALNUM_PAT.findall(name)]
     for token in name_tokens:
@@ -73,6 +77,9 @@ def twitter_name_passes(name, entity_name_tokens):
 
 
 def is_media(user):
+    """
+    Is twitter user a member of the media
+    """
     if user['screen_name'] in KNOWN_MEDIA:
         return True
     name_tokens = []
@@ -91,7 +98,10 @@ def is_media(user):
 
 def find_stakeholder_twitter_users(entities, credentials=None):
     """
+    Annotate each entity with list of twitter users
+    
     @entities = list of entities
+                (see content.content_entities)
     @credentials = dictionary containing token/secret overrides
     """
     users = []
@@ -147,6 +157,14 @@ def find_stakeholder_twitter_users(entities, credentials=None):
 
 
 def stakeholder_tweets(users, keywords, credentials=None, limit=None):
+    """
+    Get tweets from users by keywords
+    
+    @users = list of annotated entities 
+             (see find_stakeholder_twitter_users)
+    @keywords = list of keyword objects
+                (see content.content_keywords)
+    """
     # Throw out users that are too ambiguous
     # TODO: ideally we would try to disambiguate and use the best option
     users = [user for user in users if len(user['twitter_users']) <= 3]
