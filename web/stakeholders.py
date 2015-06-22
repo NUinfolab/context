@@ -89,7 +89,7 @@ def is_media(user):
     return False
 
 
-def find_stakeholder_twitter_users(content, entities, credentials=None):
+def find_stakeholder_twitter_users(entities, credentials=None):
     """
     @entities = list of entities
     @credentials = dictionary containing token/secret overrides

@@ -43,7 +43,7 @@ def content_stakeholders(content):
             'credentials': get_twitter_credentials()
         }
         stakeholder_list = find_stakeholder_twitter_users(
-            content['text'], entities, **kwargs)
+            entities, **kwargs)
         content['stakeholders'] = stakeholder_list
         _content.save(content)
     return content['stakeholders']
