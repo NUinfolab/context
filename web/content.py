@@ -17,22 +17,25 @@ class InvalidRequest(Exception):
 def content_keywords(content):
     if not 'keywords' in content:
         content['keywords'] = [x for x in get_keywords(content['text'])
-            if x['count'] > 2]      
-        _content.save(content)
+            if x['count'] > 2]  
+        _content.update({'_id': bson.ObjectId(content['id'])}, 
+            {'$set': {'keywords': content['keywords']}})               
     return content['keywords']
 
 
 def content_entities(content):
     if not 'entities' in content:
         content['entities'] = get_entities(content['text'])   
-        _content.save(content)
+        _content.update({'_id': bson.ObjectId(content['id'])}, 
+            {'$set': {'entities': content['entities']}})               
     return content['entities']
 
 
 def content_categories(content):
     if not 'categories' in content:
         content['categories'] = classify_text(content['text'])
-        _content.save(content)
+        _content.update({'_id': bson.ObjectId(content['id'])}, 
+            {'$set': {'categories': content['categories']}})               
     return content['categories']
 
 
@@ -45,13 +48,16 @@ def content_stakeholders(content):
         stakeholder_list = find_stakeholder_twitter_users(
             entities, **kwargs)
         content['stakeholders'] = stakeholder_list
-        _content.save(content)
+        _content.update({'_id': bson.ObjectId(content['id'])}, 
+            {'$set': {'stakeholders': content['stakeholders']}})               
     return content['stakeholders']
 
 
-def cached_content(url=None, content_id=None):
-    """Retrieve content from the cache or fetch it and cache it. Replaces
-    Mongo's _id with id."""
+def cached_content(url=None, content_id=None, refresh=False):
+    """
+    Retrieve content from the cache or fetch it and cache it. Replaces
+    Mongo's _id with id.  Will always fetch anew if refresh=True.
+    """
     if url:
         r = _content.find_one({'url': url})
     elif content_id:
@@ -66,13 +72,27 @@ def cached_content(url=None, content_id=None):
             'text': data['text']
         }
         _content.insert(r, manipulate=True)  # so id is set
+    elif refresh:
+        data = get_article(url)
+        update_r = {
+            '_id': r['_id'],
+            'url': url,
+            'title': data['title'],
+            'text': data['text']
+        }
+        _content.save(update_r)       
+        r = update_r
+        
     r['id'] = str(r['_id'])
     del r['_id']
     return r
 
 
 def content_identifier_required(f):
-    """Enforces url query parameter on a route."""
+    """
+    Enforces id or url query parameter on a route.
+    Accepts 'refresh' query parameter to reset cache
+    """
     @wraps(f)
     def wrapper(*args, **kwargs):
         content_id = kwargs.get('content_id')
@@ -85,13 +105,15 @@ def content_identifier_required(f):
                     '?next=%s' % request.script_root + request.path)
             else:
                 raise InvalidRequest('url parameter is required')
+
+        refresh = int(request.args.get('refresh', '0'))
         if content_id:
-            r = cached_content(content_id=content_id)
+            r = cached_content(content_id=content_id, refresh=refresh)
         else:
             url = request.args.get('url')
             if not url:
                 raise InvalidRequest('URL or content ID required.')
-            r = cached_content(url=url)
+            r = cached_content(url=url, refresh=refresh)
         if not r:
             raise Exception('Could not find article content')
         request.content = r
