@@ -50,9 +50,10 @@ def pos_tag(tokens):
 
 def tokenize(text):
     """Return tokenized string"""
-    text = text.replace('@', '__at__')
+    text = text.replace('@', '__at__').replace('#', '__hash__')
     tokens = nltk.word_tokenize(text)
-    tokens = [t.replace('__at__', '@') for t in tokens]
+    tokens = [t.replace('__at__', '@').replace('__hash__', '#')
+        for t in tokens]
     return tokens
 
 
