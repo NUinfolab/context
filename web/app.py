@@ -26,9 +26,12 @@ from werkzeug.wsgi import DispatcherMiddleware
 
 app.secret_key = get_section_data()['flaskapp_secret_key']
 
-application = DispatcherMiddleware(app, {
-    '/context':     app
-})
+# this does nothing
+#application = DispatcherMiddleware(app, {
+#    '/context':     app
+#})
+
+application = app
 
 
 def render(data, template=None):
