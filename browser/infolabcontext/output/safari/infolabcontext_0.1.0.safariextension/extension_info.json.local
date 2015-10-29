@@ -5,7 +5,7 @@
     "background_scripts": [
         "js/main.js"
     ], 
-    "homepage_url": "http://infolabprojects.com/", 
+    "homepage_url": "http://hugin.research.northwestern.edu", 
     "version": "0.1.0", 
     "browser_button": {
         "caption": "Context -dev-", 

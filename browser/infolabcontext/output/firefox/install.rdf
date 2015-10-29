@@ -13,7 +13,7 @@
         <em:bootstrap>true</em:bootstrap>
         <em:description>Infolab Context</em:description>
         <em:creator>Northwestern University InfoLab</em:creator>
-        <em:homepageURL>http://infolabprojects.com/</em:homepageURL>
+        <em:homepageURL>http://hugin.research.northwestern.edu</em:homepageURL>
         <em:iconURL>chrome://kango-79e95064-92e1-48d9-92ef-47031041edc6/content/icons/icon32.png</em:iconURL>
         <em:optionsURL>chrome://kango-79e95064-92e1-48d9-92ef-47031041edc6/content/options.html</em:optionsURL>
         <em:optionsType>3</em:optionsType>

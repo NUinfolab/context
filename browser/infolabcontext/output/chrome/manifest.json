@@ -14,7 +14,7 @@
     "background": {
         "page": "background.html"
     }, 
-    "homepage_url": "http://infolabprojects.com/", 
+    "homepage_url": "http://hugin.research.northwestern.edu", 
     "version": "0.1.0", 
     "options_page": "options.html", 
     "manifest_version": 2, 
