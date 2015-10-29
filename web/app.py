@@ -171,7 +171,7 @@ BROWSER_EXTENSIONS = [
 
 def browser_extensions():
     ext_url = \
-        'http://23.236.61.92/context/static/browser-extensions/%s_%s.%s'
+        'http://hugin.research.northwestern.edu/context/static/browser-extensions/%s_%s.%s'
     return [ {
         'name': e['name'],
         'chrome': ext_url % (e['basename'], e['chrome'], 'crx'),
