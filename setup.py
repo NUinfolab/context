@@ -8,6 +8,9 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
+        'pyopenssl',
+        'ndg-httpsclient',
+        'pyasn1',
         'requests==2.3.0',
         'nltk==2.0.5',
         'newspaper',
