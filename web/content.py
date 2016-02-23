@@ -82,7 +82,6 @@ def cached_content(url=None, content_id=None, refresh=False):
         }
         _content.save(update_r)
         r = update_r
-    else:
     r['id'] = str(r['_id'])
     del r['_id']
     return r
