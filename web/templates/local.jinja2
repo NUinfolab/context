@@ -1,0 +1,36 @@
+{% extends "base.jinja2" %}
+
+{% block content %}
+    {% for tweet in tweets %}
+     <strong>user tz:</strong> {{ tweet.user.time_zone }} <br/>
+     <strong>user description:</strong> {{ tweet.user.description }} <br/>
+     <strong>user geo_enabled:</strong> {{ tweet.user.geo_enabled }} <br/>
+     <strong>user name:</strong> {{ tweet.user.name }} <br/>
+     <strong>user location:</strong> {{ tweet.user.location }} <br/>
+     <strong>tweet geo:</strong> {{ tweet.geo }} <br/>
+     <strong>tweet coordinates:</strong> {{ tweet.coordinates }} <br/>
+     <strong>tweet place:</strong> {{ tweet.place }} <br/>
+      <p>
+        @{{ tweet.user.screen_name }}: {{ tweet.text }} ({{ tweet.geo }})
+      </p>
+      <hr/>
+    {% endfor %}
+
+    <script>
+        console.log('script');
+        var getLocalTweets = function(location) {
+            var lat = location.coords.latitude;
+            var lon = location.coords.longitude;
+            console.log(lat);
+            console.log(lon);
+            $.ajax({
+                url: '/localtweets?url={{ content_url }}&lat=' + lat + '&lon=' + lon,
+                dataType: 'json'
+            }).done(function(data) {
+                console.log(data['tweets']);
+            });
+        };
+        navigator.geolocation.getCurrentPosition(getLocalTweets);
+    </script>
+{% endblock content %}
+

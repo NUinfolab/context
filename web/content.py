@@ -17,25 +17,25 @@ class InvalidRequest(Exception):
 def content_keywords(content):
     if not 'keywords' in content:
         content['keywords'] = [x for x in get_keywords(content['text'])
-            if x['count'] > 2]  
-        _content.update({'_id': bson.ObjectId(content['id'])}, 
-            {'$set': {'keywords': content['keywords']}})               
+            if x['count'] > 2]
+        _content.update({'_id': bson.ObjectId(content['id'])},
+            {'$set': {'keywords': content['keywords']}})
     return content['keywords']
 
 
 def content_entities(content):
     if not 'entities' in content:
-        content['entities'] = get_entities(content['text'])   
-        _content.update({'_id': bson.ObjectId(content['id'])}, 
-            {'$set': {'entities': content['entities']}})               
+        content['entities'] = get_entities(content['text'])
+        _content.update({'_id': bson.ObjectId(content['id'])},
+            {'$set': {'entities': content['entities']}})
     return content['entities']
 
 
 def content_categories(content):
     if not 'categories' in content:
         content['categories'] = classify_text(content['text'])
-        _content.update({'_id': bson.ObjectId(content['id'])}, 
-            {'$set': {'categories': content['categories']}})               
+        _content.update({'_id': bson.ObjectId(content['id'])},
+            {'$set': {'categories': content['categories']}})
     return content['categories']
 
 
@@ -48,8 +48,8 @@ def content_stakeholders(content):
         stakeholder_list = find_stakeholder_twitter_users(
             entities, **kwargs)
         content['stakeholders'] = stakeholder_list
-        _content.update({'_id': bson.ObjectId(content['id'])}, 
-            {'$set': {'stakeholders': content['stakeholders']}})               
+        _content.update({'_id': bson.ObjectId(content['id'])},
+            {'$set': {'stakeholders': content['stakeholders']}})
     return content['stakeholders']
 
 
@@ -63,7 +63,7 @@ def cached_content(url=None, content_id=None, refresh=False):
     elif content_id:
         r = _content.find_one({'_id': bson.ObjectId(content_id)})
     else:
-        raise Exception('No Content Identifier') 
+        raise Exception('No Content Identifier')
     if not r:
         data = get_article(url)
         r = {
@@ -80,9 +80,9 @@ def cached_content(url=None, content_id=None, refresh=False):
             'title': data['title'],
             'text': data['text']
         }
-        _content.save(update_r)       
+        _content.save(update_r)
         r = update_r
-        
+    else:
     r['id'] = str(r['_id'])
     del r['_id']
     return r
@@ -105,7 +105,6 @@ def content_identifier_required(f):
                     '?next=%s' % request.script_root + request.path)
             else:
                 raise InvalidRequest('url parameter is required')
-
         refresh = int(request.args.get('refresh', '0'))
         if content_id:
             r = cached_content(content_id=content_id, refresh=refresh)

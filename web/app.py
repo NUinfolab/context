@@ -70,20 +70,20 @@ def session_show():
 def auth_check():
     """
     Check authorization.  Get signin token and auth_url, if needed.
-    
+
     @redirect = redirect to this url post-authorization verification
     """
     try:
         access_token = session_get('access_token')
         access_token_secret = session_get('access_token_secret')
 
-        if access_token and access_token_secret:                    
+        if access_token and access_token_secret:
             tk = get_twitter_keys()
             client = UserClient(
                 tk.consumer_key,
                 tk.consumer_secret,
                 access_token=access_token,
-                access_token_secret=access_token_secret)                    
+                access_token_secret=access_token_secret)
             """
             We need to make a call to verify_credentials in case the user
             has revoked access for this application. This is a rate-limited
@@ -123,30 +123,30 @@ def auth_check():
     except Exception, e:
         traceback.print_exc()
         return jsonify({'error': str(e)})
-             
+
 
 @app.route('/auth/verify')
 def auth_verify():
     """
-    Get final access token and secret, redirect   
-    
-    @oauth_verifier = parameter from auth_url callback (see above)  
+    Get final access token and secret, redirect
+
+    @oauth_verifier = parameter from auth_url callback (see above)
     """
     try:
         oauth_verifier = request.args.get('oauth_verifier')
         if not oauth_verifier:
             raise Exception('expected oauth_verifier parameter')
         auth_token = session_get('auth_token')
-        auth_token_secret = session_get('auth_token_secret')    
+        auth_token_secret = session_get('auth_token_secret')
         auth_redirect = session_get('auth_redirect')
         if not (auth_token and auth_token_secret):
             raise Exception('Authorization credentials not found in session')
         tk = get_twitter_keys()
         client = UserClient(tk.consumer_key, tk.consumer_secret,
-                    auth_token, auth_token_secret)                    
+                    auth_token, auth_token_secret)
         token = client.get_access_token(oauth_verifier)
         session_set('access_token', token.oauth_token)
-        session_set('access_token_secret', token.oauth_token_secret)    
+        session_set('access_token_secret', token.oauth_token_secret)
         session_pop_list(['auth_token', 'auth_token_secret', 'auth_redirect'])
         if auth_redirect:
             return redirect(auth_redirect)
@@ -199,7 +199,7 @@ def home():
     else:
         return render_template('home.jinja2', **data)
 
-  
+
 @app.route('/url')
 @app.route('/url')
 @content_identifier_required
@@ -208,15 +208,15 @@ def url_():
     Search for tweets by url
 
     @url = url to search for
-    """    
+    """
     try:
         url = request.args.get('url')
         if not url:
             raise Exception('Expected url parameter')
-          
+
         try:
             credentials = get_twitter_credentials()
-            params = {'q': url, 'count': 200}       
+            params = {'q': url, 'count': 200}
             tweets = search_recent(params, credentials=credentials)
         except TwitterAuthError:
             # User not authenticated. Re-initiating Twitter auth.
@@ -238,7 +238,7 @@ def url_():
     except Exception, e:
         traceback.print_exc()
         return render({'url': request.url, 'error': str(e)},
-            template='error.jinja2')    
+            template='error.jinja2')
 
 
 @app.route('/content')
@@ -255,9 +255,9 @@ def content():
     except Exception, e:
         traceback.print_exc()
         return render({'url': request.url, 'error': str(e)},
-            template='error.jinja2')    
+            template='error.jinja2')
 
-    
+
 @app.route('/keywords')
 @app.route('/keywords/<content_id>')
 @content_identifier_required
@@ -272,8 +272,8 @@ def keywords(content_id=None):
     except Exception, e:
         traceback.print_exc()
         return render({'url': request.url, 'error': str(e)},
-            template='error.jinja2')    
-            
+            template='error.jinja2')
+
 
 @app.route('/entities')
 @app.route('/entities/<content_id>')
@@ -289,7 +289,7 @@ def entities(content_id=None):
     except Exception, e:
         traceback.print_exc()
         return render({'url': request.url, 'error': str(e)},
-            template='error.jinja2')    
+            template='error.jinja2')
 
 
 @app.route('/categories')
@@ -302,12 +302,12 @@ def categories(content_id=None):
     """
     try:
         data = {'categories': content_categories(request.content)}
-        return render(data, template='categories.jinja2')    
+        return render(data, template='categories.jinja2')
     except Exception, e:
         traceback.print_exc()
         return render({'url': request.url, 'error': str(e)},
-            template='error.jinja2')    
-        
+            template='error.jinja2')
+
 
 @app.route('/stakeholders')
 @app.route('/stakeholders/<content_id>')
@@ -329,11 +329,11 @@ def stakeholders(content_id=None):
             '?redirect=%s' % request.url)
     except TwitterClientError:
         return render({'url':request.url},
-            template='twitter_client_error.jinja2')    
+            template='twitter_client_error.jinja2')
     except Exception, e:
         traceback.print_exc()
         return render({'url': request.url, 'error': str(e)},
-            template='error.jinja2')    
+            template='error.jinja2')
 
 
 @app.route('/stakeholdertweets')
@@ -356,7 +356,7 @@ def stakeholdertweets(content_id=None):
             credentials=credentials)
         d = group_tweets_by_screen_name([d['tweet'] for d in result])
         return render({'tweets': d.items()},
-            template='stakeholdertweets.jinja2')     
+            template='stakeholdertweets.jinja2')
     except TwitterAuthError:
         # This redirect is for the HTML UI. JSON clients should execute
         # the auth-check / auth-verify cycle before making API calls
@@ -364,12 +364,12 @@ def stakeholdertweets(content_id=None):
             '?redirect=%s' % request.url)
     except TwitterClientError:
         return render({'url':request.url},
-            template='twitter_client_error.jinja2')    
+            template='twitter_client_error.jinja2')
     except Exception, e:
         traceback.print_exc()
         return render({'url': request.url, 'error': str(e)},
-            template='error.jinja2')    
-        
+            template='error.jinja2')
+
 
 @app.route('/pundittweets')
 @app.route('/pundittweets/<content_id>/')
@@ -382,9 +382,9 @@ def pundittweets(content_id=None):
     try:
         content = request.content
         keywords = content_keywords(content)
-        categories = content_categories(content)      
+        categories = content_categories(content)
         if not categories:
-            raise Exception('No categories found for article')    
+            raise Exception('No categories found for article')
         category = categories[0][0]
         credentials = get_twitter_credentials()
         tweets = pundit_tweets(
@@ -400,13 +400,13 @@ def pundittweets(content_id=None):
             '?redirect=%s' % request.url)
     except TwitterClientError:
         return render({'url':request.url},
-            template='twitter_client_error.jinja2')    
+            template='twitter_client_error.jinja2')
     except Exception, e:
         traceback.print_exc()
         return render({'url': request.url, 'error': str(e)},
-            template='error.jinja2')    
+            template='error.jinja2')
 
-    
+
 @app.route('/topic')
 @app.route('/topic/<content_id>')
 @content_identifier_required
@@ -417,10 +417,10 @@ def topic(content_id=None):
     """
     try:
         q = twitter_query(content_keywords(request.content),
-            content_entities(request.content))        
+            content_entities(request.content))
         credentials = get_twitter_credentials()
         params = {'q': q, 'count': 100, 'result_type': 'mixed'}
-        result = twitter_search(params, credentials=credentials)  
+        result = twitter_search(params, credentials=credentials)
         tweets = screen_name_filter(result.statuses, 'media')
         return render( {'tweets': tweets }, template='topic.jinja2')
     except TwitterAuthError:
@@ -430,11 +430,47 @@ def topic(content_id=None):
             '?redirect=%s' % request.url)
     except TwitterClientError:
         return render({'url':request.url},
-            template='twitter_client_error.jinja2')    
+            template='twitter_client_error.jinja2')
     except Exception, e:
         traceback.print_exc()
         return render({'url': request.url, 'error': str(e)},
-            template='error.jinja2')    
+            template='error.jinja2')
+
+@app.route('/localtweets')
+@content_identifier_required
+def local_tweets(content_id=None):
+    lat = request.args['lat']
+    lon = request.args['lon']
+    try:
+        q = twitter_query(content_keywords(request.content),
+            content_entities(request.content))
+        credentials = get_twitter_credentials()
+        params = {
+            'count': 100,
+            'result_type': 'mixed',
+            'geocode': '%s,%s,10mi' % (lat, lon)
+        }
+        result = twitter_search(params, credentials=credentials)
+        tweets = screen_name_filter(result.statuses, 'media')
+        return render( {'tweets': tweets })
+    except TwitterAuthError:
+        # This redirect is for the HTML UI. JSON clients should execute
+        # the auth-check / auth-verify cycle before making API calls
+        return redirect(url_for('auth_check') + \
+            '?redirect=%s' % request.url)
+    except TwitterClientError:
+        return render({'url':request.url},
+            template='twitter_client_error.jinja2')
+    except Exception, e:
+        traceback.print_exc()
+        return render({'url': request.url, 'error': str(e)})
+
+
+@app.route('/local')
+@app.route('/local/<content_id>')
+def local(content_id=None):
+    """Search for relevant local tweets."""
+    return render({'content_url': request.url}, template='local.jinja2')
 
 
 @app.route('/reddits')
@@ -444,16 +480,16 @@ def reddits(content_id=None):
     """
     Search for reddits related to topic of article with <content_id>
     https://www.reddit.com/dev/api#GET_search
-    
-    The extension performs these functions on the client side due to 
+
+    The extension performs these functions on the client side due to
     rate limiting, but the website needs this.
     """
     try:
         # Search by url
         reddits = reddit_search(request.content['url'])
         # Search by keyword
-        keywords = content_keywords(request.content)        
-        q = '+'.join(x['keyword'] for x in keywords[:3])        
+        keywords = content_keywords(request.content)
+        q = '+'.join(x['keyword'] for x in keywords[:3])
         more_reddits = reddit_search(q)
         # De-dupe
         for i in xrange(len(more_reddits) - 1, -1 -1):
@@ -462,12 +498,12 @@ def reddits(content_id=None):
                 if id == r['id']:
                     del more_reddits[i]
         reddits.extend(more_reddits)
-        return render({'reddits': reddits}, template='reddits.jinja2')    
+        return render({'reddits': reddits}, template='reddits.jinja2')
     except Exception, e:
         traceback.print_exc()
         return render({'url': request.url, 'error': str(e)},
-            template='error.jinja2')    
-                         
+            template='error.jinja2')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
