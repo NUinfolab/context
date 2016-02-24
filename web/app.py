@@ -441,6 +441,7 @@ def topic(content_id=None):
 def local_tweets(content_id=None):
     lat = request.args['lat']
     lon = request.args['lon']
+    radius = request.args.get('radius', '10mi')
     try:
         q = twitter_query(content_keywords(request.content),
             content_entities(request.content))
@@ -448,7 +449,7 @@ def local_tweets(content_id=None):
         params = {
             'count': 100,
             'result_type': 'mixed',
-            'geocode': '%s,%s,10mi' % (lat, lon)
+            'geocode': '%s,%s,%s' % (lat, lon, radius)
         }
         result = twitter_search(params, credentials=credentials)
         tweets = screen_name_filter(result.statuses, 'media')
@@ -468,9 +469,10 @@ def local_tweets(content_id=None):
 
 @app.route('/local')
 @app.route('/local/<content_id>')
+@content_identifier_required
 def local(content_id=None):
     """Search for relevant local tweets."""
-    return render({'content_url': request.url}, template='local.jinja2')
+    return render({'content_url': request.args['url']}, template='local.jinja2')
 
 
 @app.route('/reddits')

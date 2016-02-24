@@ -1,20 +1,26 @@
 {% extends "base.jinja2" %}
 
 {% block content %}
-    {% for tweet in tweets %}
-     <strong>user tz:</strong> {{ tweet.user.time_zone }} <br/>
-     <strong>user description:</strong> {{ tweet.user.description }} <br/>
-     <strong>user geo_enabled:</strong> {{ tweet.user.geo_enabled }} <br/>
-     <strong>user name:</strong> {{ tweet.user.name }} <br/>
-     <strong>user location:</strong> {{ tweet.user.location }} <br/>
-     <strong>tweet geo:</strong> {{ tweet.geo }} <br/>
-     <strong>tweet coordinates:</strong> {{ tweet.coordinates }} <br/>
-     <strong>tweet place:</strong> {{ tweet.place }} <br/>
-      <p>
-        @{{ tweet.user.screen_name }}: {{ tweet.text }} ({{ tweet.geo }})
-      </p>
-      <hr/>
-    {% endfor %}
+    <style>
+        .glyphicon.spinning {
+            animation: spin 1s infinite linear;
+            -webkit-animation: spin2 1s infinite linear;
+        }
+        @keyframes spin {
+            from { transform: scale(1) rotate(0deg); }
+            to { transform: scale(1) rotate(360deg); }
+        }
+        @-webkit-keyframes spin2 {
+            from { -webkit-transform: rotate(0deg); }
+            to { -webkit-transform: rotate(360deg); }
+        }
+    </style>
+
+    <div id="geocode">
+        <span class="glyphicon glyphicon-refresh spinning"></span> Loading location ...
+    </div>
+
+    <div id="tweets"></div>
 
     <script>
         console.log('script');
@@ -23,11 +29,22 @@
             var lon = location.coords.longitude;
             console.log(lat);
             console.log(lon);
+            $('#geocode').html('<p>Location: (' + lat + ', ' + lon + ')</p>');
+            $('#tweets').html('<span class="glyphicon glyphicon-refresh spinning"></span> Loading topic tweets within 10 miles ...');
             $.ajax({
                 url: '/localtweets?url={{ content_url }}&lat=' + lat + '&lon=' + lon,
                 dataType: 'json'
             }).done(function(data) {
-                console.log(data['tweets']);
+                $('#tweets').html('');
+                $.each(data['tweets'], function(i, tweet) {
+                    console.log(tweet);
+                    var content = '<p>@' + tweet.user.screen_name + ': ' + tweet.text + '<br/> ';
+                    if (tweet.geo && tweet.geo[0] != undefined) {
+                        content += ' (' + tweet.geo[0] + ', ' + tweet.geo[1]  + ') ';
+                    }
+                    content += tweet.place.full_name + ' (' + tweet.place.place_type + ')</p><hr/>';
+                    $('#tweets').append(content);
+                });
             });
         };
         navigator.geolocation.getCurrentPosition(getLocalTweets);

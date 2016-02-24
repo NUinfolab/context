@@ -12,7 +12,7 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <style>
       body {
-        padding-top: 50px;
+        padding-top: 70px;
       }
     </style>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet">
@@ -83,7 +83,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li{% if request.endpoint == 'url_' %} class="active"{% endif %}>
-                <a href="{{ url_for('url_') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">URL Search</a>
+                <a href="{{ url_for('url_') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">URL</a>
             </li>
             <li{% if request.endpoint == 'content' %} class="active"{% endif %}>
                 <a href="{{ url_for('content') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">Content</a>
@@ -95,13 +95,16 @@
                 <a href="{{ url_for('entities') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">Entities</a>
             </li>
             <li{% if request.endpoint == 'topic' %} class="active"{% endif %}>
-                <a href="{{ url_for('topic') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">Topic</a>
+                <a href="{{ url_for('topic') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">Topic<br/>Tweets</a>
+            </li>
+            <li{% if request.endpoint == 'local' %} class="active"{% endif %}>
+                <a href="{{ url_for('local') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">Local<br/>Tweets</a>
             </li>
             <li{% if request.endpoint == 'stakeholders' %} class="active"{% endif %}>
                 <a href="{{ url_for('stakeholders') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">Stakeholders</a>
             </li>
             <li{% if request.endpoint == 'stakeholdertweets' %} class="active"{% endif %}>
-                <a href="{{ url_for('stakeholdertweets') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">Stakeholder Tweets</a>
+                <a href="{{ url_for('stakeholdertweets') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">Stakeholder<br/>Tweets</a>
             </li>
             <li{% if request.endpoint == 'reddits' %} class="active"{% endif %}>
                 <a href="{{ url_for('reddits') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">Reddits</a>
@@ -110,7 +113,7 @@
                 <a href="{{ url_for('categories') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">Categories</a>
             </li>
             <li{% if request.endpoint == 'pundittweets' %} class="active"{% endif %}>
-                <a href="{{ url_for('pundittweets') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">Pundit Tweets</a>
+                <a href="{{ url_for('pundittweets') }}{% if request.content %}?url={{ request.content.url }}{% endif %}">Pundit<br/>Tweets</a>
             </li>
           </ul>
         </div><!--/.nav-collapse -->

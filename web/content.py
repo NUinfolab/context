@@ -118,3 +118,15 @@ def content_identifier_required(f):
         return f(*args, **kwargs)
     return wrapper
 
+
+def require_url(f):
+    """Enforces URL parameter on a route. Does not do content ID resolution
+    or content lookup - for that use content_identifier_required."""
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if not 'url' in request.args:
+            return redirect(url_for('url_required') + \
+                '?next=%s' % request.script_root + request.path)
+        return f(*args, **kwargs)
+    return wrapper
+
