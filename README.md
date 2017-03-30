@@ -8,7 +8,7 @@ context itself, under the context directory, may also be used directly as a pyth
 
 # About
 
-A number of projects at NU Knightlab involve experiments in the space of evaluating contextual information related to web content in order to enhance user experience. This toolkit brings a number of those explorations into a single project space where they can be further explored and expanded.
+A number of projects at NU InfoLab involve experiments in the space of evaluating contextual information related to web content in order to enhance user experience. This toolkit brings a number of those explorations into a single project space where they can be further explored and expanded.
 
 
 # Requirements
