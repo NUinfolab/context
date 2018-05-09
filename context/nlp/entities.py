@@ -71,7 +71,7 @@ LOCATION_SUFFIXES = (
     'Avenue',
     # 'Dr.', how to disambiguate?, also St.
     'Drive',
-    'Street', 
+    'Street',
 )
 
 entity_chunk_grammar = r"""
@@ -87,23 +87,31 @@ entity_chunk_grammar = r"""
 def chunk_named_entities(tagged_tokens):
     """Use NLTK's named entity chunker to chunk list of tagged tokens"""
     return nltk.ne_chunk(tagged_tokens)
-    
+
 
 def normalize_name(tokens):
-    """Normalize tokenized name""" 
+    """Normalize tokenized name"""
     for i, t in enumerate(tokens):
         if t.lower().strip().strip('.') not in NAME_PREFIXES:
-            break 
+            break
     l = tokens[i:]
     r = ' '.join(l)
-    if r.endswith("'s") or r.endswith(codecs.decode("’s", 'utf-8')):
-        r = r[:-2] 
+    try:
+        s = codecs.decode("’s", 'utf-8')
+    except:
+        s = "’s"
+    if r.endswith("'s") or r.endswith(s):
+        r = r[:-2]
     return r
 
 
 def clean_token(token):
     """Replace fancy single quote with plain single quote"""
-    token = token.replace(codecs.decode('’', 'utf-8'), "'")
+    try:
+        r = codecs.decode('’', 'utf-8')
+    except:
+        r = '’'
+    token = token.replace(r, "'")
     return token
 
 
@@ -113,7 +121,7 @@ def best_name(tokenized_names):
         if normalize_name(name)]
     if not names:
         return None
-    names.sort(lambda x,y: cmp(len(x), len(y)))
+    names.sort(key=lambda x: len(x))
     return names[-1]
 
 
@@ -200,8 +208,7 @@ def _organize_entities(entities_by_type, locations, sentences):
     all_entities = []
     for entity_type, entities in entities_by_type.items():
         type_entities = {}
-        entities.sort(lambda x,y: cmp(len(y.normalized_name),
-            len(x.normalized_name)))
+        entities.sort(key=lambda x: x.normalized_name)
         for i, entity in enumerate(entities):
             if entity in type_entities:
                 type_entities[entity]['count'] += 1
@@ -241,6 +248,10 @@ def _organize_entities(entities_by_type, locations, sentences):
 
 def get_entities(text):
     """Return list of entities in text sorted by score (desc)"""
+    try:
+        text = codecs.decode(text, 'utf-8')
+    except:
+        pass
     sentences = get_sentences(text)
     entities_by_type, locations = _entity_types_and_locations(sentences)
     all_entities = _organize_entities(entities_by_type, locations, sentences)
@@ -249,31 +260,31 @@ def get_entities(text):
     names = [ entity['name'] for entity in sorted_entities ]
     indexes_to_delete = []
     # Keep only the top scoring of repeated names. TODO: Consider better
-    # options, e.g. checking against known GPE, ORGANIZATION lists. 
+    # options, e.g. checking against known GPE, ORGANIZATION lists.
     for i, name in enumerate(names):
         if name in names[:i]:
             indexes_to_delete.append(i)
     for i in reversed(indexes_to_delete):
-        del(sorted_entities[i]) 
+        del(sorted_entities[i])
     return sorted_entities
 
 
 def collapse_entities(entity_list):
     """Return unique list of entity names collapsed into shortest forms"""
     name_list = []
-    
+
     for e in entity_list:
         name_forms = sorted(e['name_forms'], key=lambda s: len(s))
         while name_forms:
-            name = name_forms.pop(0)                   
+            name = name_forms.pop(0)
             for i in range(len(name_forms) - 1, -1, -1):
                 s = name_forms[i]
                 if s.find(name) > -1:
-                    del name_forms[i]   
-            if name not in name_list:                
+                    del name_forms[i]
+            if name not in name_list:
                 name_list.append(name)
         name_list.extend([s for s in name_forms if s not in name_list])
-       
+
     return name_list
 
 
