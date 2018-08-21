@@ -12,7 +12,7 @@ setup(
         'ndg-httpsclient',
         'pyasn1',
         'requests==2.3.0',
-        'nltk==2.0.5',
+        'nltk==3.3',
         'newspaper',
         'numpy',
         'birdy',

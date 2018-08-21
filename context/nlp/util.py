@@ -62,7 +62,7 @@ def stem(word):
     global _stemmer
     if _stemmer is None:
         _stemmer = nltk.stem.porter.PorterStemmer()
-    return _stemmer.stem_word(word)
+    return _stemmer.stem(word)
 
 
 def lemmatize(word):
